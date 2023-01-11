@@ -1,0 +1,128 @@
+<html>
+    <style>
+        /* use relative units for layout dimensions */
+        body {
+          font-family: "Helvetica Neue", sans-serif;
+        }
+        .tweet-list {
+          width: 100%;
+        }
+
+        .tweet {
+          box-sizing: border-box;
+          width: 100%;
+          padding: 1rem;
+          border: 1px solid #e1e8ed;
+        }
+        /* use larger font sizes for improved readability on small screens */
+        .tweet h3 {
+          font-size: 1.0rem;
+        }
+        .tweet p {
+          font-size: 1.0rem;
+        }
+
+        .tweet-header {
+          display: flex;
+          align-items: top;
+          margin-left: 1.0rem;
+        }
+        .tweet-header img {
+          vertical-align: middle;
+          border-radius: 50%;
+        }
+        .tweet-header h3 {
+          font-size: 1.50rem;
+          font-weight: bold;
+          margin-left: 1.0rem;
+          display: inline-block;
+          margin: 0;
+        }
+        .tweet-header p {
+          font-size: 1.5rem;
+          font-weight: bold;
+          margin-left: 8px;
+          display: inline-block;
+          margin: 0;
+        }
+        /* use touch-friendly buttons */
+        .tweet-footer a {
+          display: inline-block;
+          padding: 0.5rem 1rem;
+          border-radius: 0.25rem;
+          background-color: #1da1f2;
+          color: white;
+          text-decoration: none;
+        }
+        /* scale down media elements */
+        .tweet-media img {
+          max-width: 50%;
+          height: auto;
+        }
+        /* display profile picture, user name, and screen name on the same line */
+        .tweet-header img {
+          vertical-align: top;
+        }
+        .tweet-header h3 {
+          display: inline-block;
+          font-size: 1.65rem;
+          margin: 0.25rem;
+          vertical-align: top
+        }
+        .tweet-header p {
+          display: inline-block;
+          margin: 0.25rem;
+          font-size: 1.65rem;
+          vertical-align: top
+        }
+        /* use Twitter's color scheme and typography */
+        .tweet-header h3,
+        .tweet-header p {
+          color: #14171a;
+        }
+        .tweet-body p {
+          font-size: 1.0rem;
+          line-height: 1.5;
+          padding: 0 16px;
+          color: #657786;
+        }
+        .tweet-footer p {
+          font-size: 1.0rem;
+          font-weight: bold;
+          margin-left: 1.0rem;
+          color: #657786;
+        }
+        .tweet-footer a {
+          margin-left: 1.0rem;
+        }
+        
+    </style>
+      
+    <div class="tweet-list">
+    {% for tweet in tweets %}
+        <div class="tweet">
+        <div class="tweet-header">
+            <img src="{{ tweet.user.profile_image_url }}" alt="{{ tweet.user.name }}'s profile picture">
+            <h3>{{ tweet.user.name }}</h3>
+            <p>@{{ tweet.user.screen_name }}</p>                              
+        </div>       
+        <div class="tweet-body">
+          <p>{{ tweet.full_text }}</p>
+        </div>   
+        {% if tweet.entities.media %}
+            <div class="tweet-media">
+            {% for media in tweet.entities.media %}
+                <img src="{{ media.media_url_https }}" alt="Tweet media">
+            {% endfor %}
+            </div>
+        {% endif %}
+        <div class="tweet-footer">
+            {% set date = tweet.created_at.strftime('%b %d, %Y at %I:%M %p') %}
+            <p>{{ date }}</p>
+            <a href="https://twitter.com/{{ tweet.user.screen_name }}/status/{{ tweet.id }}" target="_blank">View on Twitter</a>
+        </div>
+        </div>
+    {% endfor %}
+    </div>
+      
+</html>
