@@ -32,7 +32,7 @@ templates = Jinja2Templates(directory="public/templates")
 # Main code needed to render the get the tweets and render in HTML
 @app.get("/tweet/{symbol_name}", response_class=HTMLResponse)
 async def tweet(symbol_name: str, request: Request):
-    # create an OAuth1 authentication object
+    # create an OAuth1 authentication object 
     auth = tweepy.OAuth1UserHandler(consumer_key, consumer_secret, access_token, access_token_secret)
 
     # create a Tweepy API client
