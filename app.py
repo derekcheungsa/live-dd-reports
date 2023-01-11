@@ -40,11 +40,11 @@ async def tweet(symbol_name: str, request: Request):
     max_tweets = 150
     symbol_name_upper = symbol_name.upper()
 
-    term = query_parameters.get(symbol_name,'None')
+    term = query_parameters.get(symbol_name_upper,'None')
     if (term == 'None'):
-        query = "$"+symbol_name
+        query = "$"+symbol_name_upper
     else:
-        query = "$"+symbol_name + " OR " + term
+        query = "$"+symbol_name_upper + " OR " + term
 
     # Use the search/tweets endpoint to retrieve tweets matching the search term
     tweets = tweepy.Cursor(api.search_tweets, q=query, lang="en", tweet_mode="extended").items(max_tweets)
