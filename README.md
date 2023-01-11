@@ -19,6 +19,7 @@ Tradingview real-time widgets, and Google Sheets so that there are additional in
 
 
    **Backend:**
+   
    The backend is very simple.  It uses FastAPI and only has one main routine that handles the serving of the html page.  
    You can deploy this in one of many Clouds.  As an example, you can deploy on render.com
 
