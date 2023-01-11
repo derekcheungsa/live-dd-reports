@@ -26,7 +26,8 @@ Tradingview real-time widgets, and Google Sheets so that there are additional in
    2. Specify the build command to be build.sh
    3. Add in the Twitter API keys in the environment variables (TWITTER_KEY,TWITTER_SECRET,TWITTER_ACCESS_TOKEN, TWITTER_ACCESS_SECRET)
    4. Add in the deploy command
-   uvicorn app:app --host 0.0.0.0 --port 10000
+      uvicorn app:app --host 0.0.0.0 --port 10000
+   5. Point browser to <service-url>/tweet/<symbol>
 
 
 ## 3.License
