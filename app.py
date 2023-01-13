@@ -19,7 +19,8 @@ app.mount("/assets", StaticFiles(directory="public/assets"))
 
 #Use this dict to add term to the query, you can use OR in the string for more than one term
 #
-query_parameters = {'AR': '#natgas'}
+query_parameters = {'AR': '#natgas',
+                    'FLNG': '#lng'}
 
 # your Twitter API credentials
 consumer_key = os.environ['TWITTER_KEY']
