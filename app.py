@@ -40,7 +40,7 @@ async def tweet(symbol_name: str, request: Request):
     api = tweepy.API(auth)
     max_tweets = 150
     symbol_name_upper = symbol_name.upper()
-
+   
     term = query_parameters.get(symbol_name_upper,'None')
     if (term == 'None'):
         query = "$"+symbol_name_upper
@@ -243,7 +243,7 @@ async def tweet(symbol_name: str, request: Request):
 
     # create a Tweepy API client
     api = tweepy.API(auth)
-    max_tweets = 150
+    max_tweets = 250
     symbol_name_upper = symbol_name.upper()
 
     #Specify search term
