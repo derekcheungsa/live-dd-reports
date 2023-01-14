@@ -13,14 +13,16 @@ from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 
+#Use this dict to add term to the query, you can use OR in the string for more than one term
+#
+query_parameters = {'AR': '#natgas',
+                    'FLNG': '#lng',
+                    'SDE': '$SDE.TO'}
 
 app = FastAPI()
 app.mount("/assets", StaticFiles(directory="public/assets"))
 
-#Use this dict to add term to the query, you can use OR in the string for more than one term
-#
-query_parameters = {'AR': '#natgas',
-                    'FLNG': '#lng'}
+
 
 # your Twitter API credentials
 consumer_key = os.environ['TWITTER_KEY']
@@ -238,16 +240,20 @@ async def get_dividend(symbol_name: str):
 
 @app.get("/tweet/{symbol_name}", response_class=HTMLResponse)
 async def tweet(symbol_name: str, request: Request):
+
     # create an OAuth1 authentication object
     auth = tweepy.OAuth1UserHandler(consumer_key, consumer_secret, access_token, access_token_secret)
 
     # create a Tweepy API client
     api = tweepy.API(auth)
-    max_tweets = 250
+    max_tweets = 150
     symbol_name_upper = symbol_name.upper()
 
-    #Specify search term
-    query = "$"+symbol_name + " OR " + "#natgas"
+    term = query_parameters.get(symbol_name,'None')
+    if (term == 'None'):
+        query = "$"+symbol_name
+    else:
+        query = "$"+symbol_name + " OR " + term
 
     # Use the search/tweets endpoint to retrieve tweets matching the search term
     tweets = tweepy.Cursor(api.search_tweets, q=query, lang="en", tweet_mode="extended").items(max_tweets)
