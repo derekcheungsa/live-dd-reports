@@ -1,5 +1,7 @@
 # List of parameters
-$param_list = "AM AR CMRE EGY EPR FLNG FTCO GSL INSW MP MPW TRTN TMDX MPLX AROC EPD VET"
+$param_list = "AM AR CMRE EGY EPR FLNG FTCO GSL INSW MP MPW TRTN TMDX MPLX AROC EPD VET ZIM"
+#$param_list = "KNTK"
+
 
 # Splitting the string
 $param_array = $param_list -split " "
