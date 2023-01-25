@@ -356,9 +356,10 @@ similar_companies_dict={'FTCO': ['GOLD','KGC','AU','AEM','NEM'],
                         'MP' : ['SGML','LAC','MTRN'],
                         'INSW' : ['FRO','TRMD','EURN'],
                         'MPLX' : ['AM','EPD','ENB','PBA','ET'],
+                        'ZIM' : ['MATX'],
                         'KNTK' : ['AM','EPD','ENB','PBA','ET','MPLX'],
                         'AM' : ['EPD','ET','ENB','PBA','MPLX']}
-                        
+                    
 if (symbol in similar_companies_dict):
     similar_companies = similar_companies_dict[symbol]
 else:
