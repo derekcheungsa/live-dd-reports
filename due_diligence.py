@@ -76,14 +76,9 @@ stylesheet = widgets.html_report_stylesheet()
 symbol = sys.argv[1]
 #symbol = "AR"
 
-df_data = openbb.stocks.fa.data(symbol)
-long_name = df_data.at["Company","Values"]
-sector =  df_data.at["Sector","Values"]
-industry = df_data.at["Industry","Values"]
-exchange = "NYSE"
-report_name = f"{symbol}".upper()
-
 # Customize 
+exchange_dict = { 'TSLA' : 'NASDAQ'}
+
 similar_companies_dict={
                         'AM' : ['EPD','ET','ENB','PBA','MPLX'],
                         'AR': ['RRC', 'EQT','SWN','CNX','CHK'],
@@ -113,6 +108,17 @@ if (symbol in investor_report_url_dict):
 else:
     investor_report_url=""
  
+df_data = openbb.stocks.fa.data(symbol)
+long_name = df_data.at["Company","Values"]
+sector =  df_data.at["Sector","Values"]
+industry = df_data.at["Industry","Values"]
+
+if (symbol in exchange_dict):
+    exchange=exchange_dict[symbol]
+else
+    exchange = "NYSE"
+
+report_name = f"{symbol}".upper()
 
 
 # In[4]:
