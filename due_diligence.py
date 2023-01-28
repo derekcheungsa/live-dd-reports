@@ -73,8 +73,8 @@ stylesheet = widgets.html_report_stylesheet()
 
 # Parameters that will be replaced when calling this notebook
 # Do not leave parameters blank as notebook will not run otherwise
-#symbol = sys.argv[1]
-symbol = "GSL"
+symbol = sys.argv[1]
+#symbol = "AR"
 
 df_data = openbb.stocks.fa.data(symbol)
 long_name = df_data.at["Company","Values"]
@@ -103,6 +103,8 @@ similar_companies_dict={
 
 investor_report_url_dict ={'TRTN': 'https://www.tritoninternational.com/sites/triton-corp/files/investor-presentation-nov-2022.pdf',
                             'GSL': 'https://www.globalshiplease.com/static-files/a226750c-bb27-45e2-8017-a0183e07ad26', 
+                            'MP' : 'https://s25.q4cdn.com/570172628/files/doc_presentations/2022/11/MP-3Q22-Earnings-Deck-FINAL.pdf',
+                           'TMDX': 'https://investors.transmedics.com/static-files/c4f69c45-77b0-4981-a5a7-b404ab4aae95',
                             'AR' : 'https://d1io3yog0oux5.cloudfront.net/_6cc4d707f40f7cc56aebe36b019cb270/anteroresources/db/641/5970/pdf/AR+Investor+Presentation_Dec_12.01.2022_vF3.pdf'}
 
 if (symbol in investor_report_url_dict):
@@ -190,15 +192,17 @@ df_institutional_shareholders.index += 1
 df_institutional_shareholders
 
 
-# In[12]:
+# In[90]:
 
 
-df_sec_filings = openbb.stocks.dd.sec(symbol=symbol)[["Type", "Category", "Link"]].head(
-    5
-)
-df_sec_filings["Link"] = df_sec_filings["Link"].apply(
-    lambda x: f'<a href="{x}">{x}</a>'
-)
+df_sec_filings = openbb.stocks.dd.sec(symbol=symbol)
+if not df_sec_filings.empty:
+    df_sec_filings = df_sec_filings[["Type", "Category", "Link"]].head(
+        5
+    )
+    df_sec_filings["Link"] = df_sec_filings["Link"].apply(
+        lambda x: f'<a href="{x}">{x}</a>'
+    )
 df_sec_filings
 
 
