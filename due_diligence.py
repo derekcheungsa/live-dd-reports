@@ -115,7 +115,7 @@ industry = df_data.at["Industry","Values"]
 
 if (symbol in exchange_dict):
     exchange=exchange_dict[symbol]
-else
+else:
     exchange = "NYSE"
 
 report_name = f"{symbol}".upper()
