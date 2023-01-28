@@ -77,7 +77,8 @@ symbol = sys.argv[1]
 #symbol = "AR"
 
 # Customize 
-exchange_dict = { 'TSLA' : 'NASDAQ'}
+exchange_dict = { 'TSLA' : 'NASDAQ',
+                  'TMDX' : 'NASDAQ'}
 
 similar_companies_dict={
                         'AM' : ['EPD','ET','ENB','PBA','MPLX'],
@@ -100,6 +101,9 @@ investor_report_url_dict ={'TRTN': 'https://www.tritoninternational.com/sites/tr
                             'GSL': 'https://www.globalshiplease.com/static-files/a226750c-bb27-45e2-8017-a0183e07ad26', 
                             'MP' : 'https://s25.q4cdn.com/570172628/files/doc_presentations/2022/11/MP-3Q22-Earnings-Deck-FINAL.pdf',
                            'TMDX': 'https://investors.transmedics.com/static-files/c4f69c45-77b0-4981-a5a7-b404ab4aae95',
+                           'FLNG': 'https://ml-eu.globenewswire.com/Resource/Download/362a3031-2be8-4698-93d0-8066618b20b6'
+                           'EGY' : 'https://d1io3yog0oux5.cloudfront.net/_202883002163863943d602098d2b6e88/vaalco/db/776/7755/pdf/November+IR+Deck+Final+v1.pdf'
+                           'EPR' : 'https://investors.eprkc.com/investor-presentation/default.aspx',
                            'TSLA': 'https://tesla-cdn.thron.com/static/SVCPTV_2022_Q4_Quarterly_Update_JZPPNX.pdf?xseo=&response-content-disposition=inline%3Bfilename%3D%22TSLA-Q4-2022-Update.pdf%22',
                             'AR' : 'https://d1io3yog0oux5.cloudfront.net/_6cc4d707f40f7cc56aebe36b019cb270/anteroresources/db/641/5970/pdf/AR+Investor+Presentation_Dec_12.01.2022_vF3.pdf'}
 
@@ -941,9 +945,10 @@ htmlcode = f"""
     </div>
 </div>
 """
-htmlcode += widgets.row([widgets.h(3, "Investor Presentation for " + symbol)])
+
 
 if (investor_report_url): 
+    htmlcode += widgets.row([widgets.h(3, "Investor Presentation for " + symbol)])
     htmlcode += f"""
         <div class="hcontainer">
             <div class="item">
