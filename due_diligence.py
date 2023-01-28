@@ -196,7 +196,7 @@ df_institutional_shareholders
 
 
 df_sec_filings = openbb.stocks.dd.sec(symbol=symbol)
-if not df_sec_filings.empty:
+if not df_sec_filings:
     df_sec_filings = df_sec_filings[["Type", "Category", "Link"]].head(
         5
     )
