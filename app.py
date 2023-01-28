@@ -235,7 +235,7 @@ async def get_option_chain(symbol_name: str):
         filtered_df = options_data[options_data['lastTradeDate_c'] == today]
 
     if (filtered_df.empty):
-       filtered_df= options_data.head(50)
+       filtered_df= options_data.head(100)
     
     return {filtered_df.to_json(date_unit="s", date_format="iso",orient="values")}
 
