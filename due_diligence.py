@@ -3,7 +3,7 @@
 
 # ## Notebook setup
 
-# In[981]:
+# In[1]:
 
 
 import os
@@ -56,7 +56,7 @@ warnings.filterwarnings("ignore")
 predictions = False
 
 
-# In[982]:
+# In[2]:
 
 
 cfg.theme = TerminalStyle("light", "light", "light")
@@ -68,12 +68,13 @@ stylesheet = widgets.html_report_stylesheet()
 
 # 
 
-# In[983]:
+# In[79]:
 
 
 # Parameters that will be replaced when calling this notebook
 # Do not leave parameters blank as notebook will not run otherwise
-symbol = sys.argv[1]
+#symbol = sys.argv[1]
+symbol = "GSL"
 
 df_data = openbb.stocks.fa.data(symbol)
 long_name = df_data.at["Company","Values"]
@@ -82,10 +83,36 @@ industry = df_data.at["Industry","Values"]
 exchange = "NYSE"
 report_name = f"{symbol}".upper()
 
+# Customize 
+similar_companies_dict={
+                        'AM' : ['EPD','ET','ENB','PBA','MPLX'],
+                        'AR': ['RRC', 'EQT','SWN','CNX','CHK'],
+                        'FLNG' : ['GLNG','SFL'],
+                        'FTCO': ['GOLD','KGC','AU','AEM','NEM'],
+                        'GSL' : ['DAC','CMRE','SFL'],
+                        'MP' : ['SGML','LAC','MTRN'],
+                        'INSW' : ['FRO','TRMD','EURN'],
+                        'IBM' : ['MSFT','GOOGL','INTC','HPQ','AAPL'],
+                        'MPLX' : ['AM','EPD','ENB','PBA','ET'],
+                        'TRTN' : ['TGH','AER','GATX'],
+                        'KNTK' : ['AM','EPD','ENB','PBA','ET','MPLX'],
+                        'V' : ['MA','PYPL','SQ','EBAY','FIS'],
+                        'ZIM' : ['MATX']
+                        }
+
+
+investor_report_url_dict ={'TRTN': 'https://www.tritoninternational.com/sites/triton-corp/files/investor-presentation-nov-2022.pdf',
+                            'GSL': 'https://www.globalshiplease.com/static-files/a226750c-bb27-45e2-8017-a0183e07ad26', 
+                            'AR' : 'https://d1io3yog0oux5.cloudfront.net/_6cc4d707f40f7cc56aebe36b019cb270/anteroresources/db/641/5970/pdf/AR+Investor+Presentation_Dec_12.01.2022_vF3.pdf'}
+
+if (symbol in investor_report_url_dict):
+    investor_report_url = investor_report_url_dict[symbol]
+else:
+    investor_report_url=""
  
 
 
-# In[984]:
+# In[4]:
 
 
 if "." in symbol:
@@ -95,7 +122,7 @@ if "." in symbol:
 symbol = symbol.upper()
 
 
-# In[985]:
+# In[5]:
 
 
 ticker_data = openbb.stocks.load(
@@ -113,7 +140,7 @@ report_title, report_date, report_time, report_timezone
 
 # ## Data
 
-# In[986]:
+# In[6]:
 
 
 (
@@ -124,14 +151,14 @@ report_title, report_date, report_time, report_timezone
 df_quarter_revenues
 
 
-# In[987]:
+# In[7]:
 
 
 display_year = sorted(df_year_estimates.columns.tolist())[:3]
 df_year_estimates = df_year_estimates[display_year].head(5)
 
 
-# In[988]:
+# In[8]:
 
 
 tables = openbb.etf.news(f"{long_name}", 20)
@@ -141,7 +168,7 @@ for table in tables:
     )
 
 
-# In[989]:
+# In[9]:
 
 
 df_institutional_shareholders = openbb.stocks.fa.shrs(symbol, holder="institutional")
@@ -149,13 +176,13 @@ df_institutional_shareholders.index += 1
 df_institutional_shareholders
 
 
-# In[990]:
+# In[10]:
 
 
 openbb.stocks.fa.shrs(symbol)
 
 
-# In[991]:
+# In[11]:
 
 
 df_institutional_shareholders = openbb.stocks.fa.shrs(symbol)
@@ -163,7 +190,7 @@ df_institutional_shareholders.index += 1
 df_institutional_shareholders
 
 
-# In[992]:
+# In[12]:
 
 
 df_sec_filings = openbb.stocks.dd.sec(symbol=symbol)[["Type", "Category", "Link"]].head(
@@ -175,20 +202,20 @@ df_sec_filings["Link"] = df_sec_filings["Link"].apply(
 df_sec_filings
 
 
-# In[993]:
+# In[13]:
 
 
 df_analyst = openbb.stocks.dd.analyst(symbol=symbol)
 
 
-# In[994]:
+# In[14]:
 
 
 df_rating = openbb.stocks.dd.rating(symbol)
 df_rating
 
 
-# In[995]:
+# In[15]:
 
 
 fig, ax = plt.subplots(figsize=(11, 3), dpi=150)
@@ -205,7 +232,7 @@ fig.savefig(f, format="svg")
 pcr_chart = f.getvalue().decode("utf-8")
 
 
-# In[996]:
+# In[16]:
 
 
 expiry_dates = openbb.stocks.options.expirations(symbol)
@@ -216,7 +243,7 @@ else:
     option_chain = pd.DataFrame()
 
 
-# In[997]:
+# In[17]:
 
 
 if not option_chain.empty:
@@ -234,7 +261,7 @@ if not option_chain.empty:
     vol_chart = f.getvalue().decode("utf-8")
 
 
-# In[998]:
+# In[18]:
 
 
 if not option_chain.empty:
@@ -248,7 +275,7 @@ if not option_chain.empty:
     voi_chart = f.getvalue().decode("utf-8")
 
 
-# In[999]:
+# In[19]:
 
 
 fig, ax1 = plt.subplots(figsize=(11, 5), dpi=150)
@@ -267,7 +294,7 @@ fig.savefig(f, format="svg")
 net_short_position = f.getvalue().decode("utf-8")
 
 
-# In[1000]:
+# In[20]:
 
 
 fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1, figsize=(11, 5), dpi=150)
@@ -279,7 +306,7 @@ fig.savefig(f, format="svg")
 dark_pools = f.getvalue().decode("utf-8")
 
 
-# In[1001]:
+# In[21]:
 
 
 fig, ax = plt.subplots(figsize=(11, 3), dpi=150)
@@ -296,7 +323,7 @@ fig.savefig(f, format="svg")
 gtrades_chart = f.getvalue().decode("utf-8")
 
 
-# In[1002]:
+# In[22]:
 
 
 fig, ax = plt.subplots(figsize=(11, 3), dpi=150)
@@ -313,7 +340,7 @@ fig.savefig(f, format="svg")
 gov_contracts_chart = f.getvalue().decode("utf-8")
 
 
-# In[1003]:
+# In[23]:
 
 
 fig, ax = plt.subplots(figsize=(11, 3), dpi=150)
@@ -329,7 +356,7 @@ fig.savefig(f, format="svg")
 google_mentions_chart = f.getvalue().decode("utf-8")
 
 
-# In[1004]:
+# In[24]:
 
 
 fig, ax = plt.subplots(figsize=(11, 3), dpi=150)
@@ -346,22 +373,9 @@ fig.savefig(f, format="svg")
 google_regions_chart = f.getvalue().decode("utf-8")
 
 
-# In[1005]:
+# In[25]:
 
 
-similar_companies_dict={'FTCO': ['GOLD','KGC','AU','AEM','NEM'],
-                        'AR': ['RRC', 'EQT','SWN','CNX','CHK'],
-                        'FLNG' : ['GLNG','SFL'],
-                        'GSL' : ['DAC','CMRE','SFL'],
-                        'MP' : ['SGML','LAC','MTRN'],
-                        'INSW' : ['FRO','TRMD','EURN'],
-                        'IBM' : ['MSFT','GOOGL','INTC','HPQ','AAPL'],
-                        'MPLX' : ['AM','EPD','ENB','PBA','ET'],
-                        'ZIM' : ['MATX'],
-                        'KNTK' : ['AM','EPD','ENB','PBA','ET','MPLX'],
-                        'V' : ['MA','PYPL','SQ','EBAY','FIS'],
-                        'AM' : ['EPD','ET','ENB','PBA','MPLX']}
-                    
 if (symbol in similar_companies_dict):
     similar_companies = similar_companies_dict[symbol]
 else:
@@ -382,7 +396,7 @@ fig.savefig(f, format="svg")
 historical_similar = f.getvalue().decode("utf-8")
 
 
-# In[1006]:
+# In[26]:
 
 
 fig, ax = plt.subplots(figsize=(11, 5), dpi=150)
@@ -398,7 +412,7 @@ fig.savefig(f, format="svg")
 hcorr_similar = f.getvalue().decode("utf-8")
 
 
-# In[1007]:
+# In[27]:
 
 
 fig, ax = plt.subplots(figsize=(11, 5), dpi=150)
@@ -414,7 +428,7 @@ fig.savefig(f, format="svg")
 vol_similar = f.getvalue().decode("utf-8")
 
 
-# In[1008]:
+# In[28]:
 
 
 fig, ax = plt.subplots(figsize=(11, 5), dpi=150)
@@ -430,43 +444,65 @@ fig.savefig(f, format="svg")
 scorr_similar = f.getvalue().decode("utf-8")
 
 
-# In[1009]:
+# In[88]:
 
 
 valuation_comparison = openbb.stocks.ca.screener(similar_companies, "valuation")
 valuation_comparison = valuation_comparison.drop(columns=['Change', 'Volume', 'Price', 'EPS next 5Y', 'PEG', 'Sales past 5Y'])
+valuation_comparison['Market Cap']=valuation_comparison['Market Cap'].apply(lambda x: "${0:.0f} M".format(x/1000000))
+
+valuation_comparison = valuation_comparison.style.format({"EPS this Y": "${:,.2f}", "EPS next Y": "${:,.2f}", "EPS past 5Y": "${:,.2f}", 
+                                                          "P/E": "{:,.2f}", "Fwd P/E":"{:,.2f}", "P/S": "{:,.2f}" , "P/B": "{:,.2f}" , 
+                                                          "P/C":"{:,.2f}", "P/FCF": "{:,.2f}"} 
+                                                        )
+                                                      
+#valuation_comparison['EPS this Y']=valuation_comparison['EPS this Y'].apply(lambda x: "${:,.2f}".format(x))
 
 valuation_comparison
 
 
-# In[1010]:
+# In[83]:
 
 
 financial_comparison = openbb.stocks.ca.screener(similar_companies, "financial")
 financial_comparison = financial_comparison.drop(columns=['Change', 'Volume', 'Earnings', 'Price','Market Cap'])
+financial_comparison['Dividend']=financial_comparison['Dividend'].apply(lambda x: "{0:.1f}%".format(x*100))
+financial_comparison['ROA']=financial_comparison['ROA'].apply(lambda x: "{0:.1f}%".format(x*100))
+financial_comparison['ROE']=financial_comparison['ROE'].apply(lambda x: "{0:.1f}%".format(x*100))
+financial_comparison['ROI']=financial_comparison['ROI'].apply(lambda x: "{0:.1f}%".format(x*100))
+financial_comparison['Gross M']=financial_comparison['Gross M'].apply(lambda x: "{0:.1f}%".format(x*100))
+financial_comparison['Oper M']=financial_comparison['Oper M'].apply(lambda x: "{0:.1f}%".format(x*100))
+financial_comparison['Profit M']=financial_comparison['Profit M'].apply(lambda x: "{0:.1f}%".format(x*100))
+financial_comparison= financial_comparison.fillna("")
 #financial_comparison = financial_comparison.rename(columns={'Gross M': 'Gross Margin', 'Oper M': 'Operating Margin', 'Profit M': 'Profit Margin'})
 financial_comparison
 
 
-# In[1011]:
+# In[82]:
 
 
 ownership_comparison = openbb.stocks.ca.screener(similar_companies, "ownership")
 ownership_comparison = ownership_comparison.drop(columns=['Market Cap', 'Change', 'Volume', 'Avg Volume', 'Price'])
-
+ownership_comparison= ownership_comparison.fillna("")
 ownership_comparison
 
 
-# In[1012]:
+# In[81]:
 
 
 performance_comparison = openbb.stocks.ca.screener(similar_companies, "performance")
 performance_comparison = performance_comparison.drop(columns=['Rel Volume', 'Avg Volume', 'Price','Change','Volume'])
-
+performance_comparison['Perf Week']=performance_comparison['Perf Week'].apply(lambda x: "{0:.1f}%".format(x*100))
+performance_comparison['Perf Month']=performance_comparison['Perf Month'].apply(lambda x: "{0:.1f}%".format(x*100))
+performance_comparison['Perf Quart']=performance_comparison['Perf Quart'].apply(lambda x: "{0:.1f}%".format(x*100))
+performance_comparison['Perf Half']=performance_comparison['Perf Half'].apply(lambda x: "{0:.1f}%".format(x*100))
+performance_comparison['Perf Year']=performance_comparison['Perf Year'].apply(lambda x: "{0:.1f}%".format(x*100))
+performance_comparison['Perf YTD']=performance_comparison['Perf YTD'].apply(lambda x: "{0:.1f}%".format(x*100))
+performance_comparison= performance_comparison.fillna("")
 performance_comparison
 
 
-# In[1013]:
+# In[33]:
 
 
 try:
@@ -477,7 +513,7 @@ except:
     pass
 
 
-# In[1014]:
+# In[34]:
 
 
 try:
@@ -488,7 +524,7 @@ except:
     pass
 
 
-# In[1015]:
+# In[35]:
 
 
 fig, ax = plt.subplots(figsize=(11, 3), dpi=150)
@@ -504,14 +540,14 @@ fig.savefig(f, format="svg")
 gov_histcont_chart = f.getvalue().decode("utf-8")
 
 
-# In[1016]:
+# In[36]:
 
 
 df_lobbying = openbb.stocks.gov.lobbying(symbol, limit=5)
 df_lobbying
 
 
-# In[1017]:
+# In[37]:
 
 
 fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1, figsize=(11, 5), dpi=150)
@@ -527,7 +563,7 @@ fig.savefig(f, format="svg")
 price_vs_short_interest = f.getvalue().decode("utf-8")
 
 
-# In[1018]:
+# In[38]:
 
 
 fig, (candles, volume) = plt.subplots(nrows=2, ncols=1, figsize=(11, 5), dpi=150)
@@ -545,7 +581,7 @@ fig.savefig(f, format="svg")
 price_chart = f.getvalue().decode("utf-8")
 
 
-# In[1019]:
+# In[39]:
 
 
 fig, ax = plt.subplots(figsize=(11, 3), dpi=150)
@@ -563,7 +599,7 @@ fig.savefig(f, format="svg")
 price_target_chart = f.getvalue().decode("utf-8")
 
 
-# In[1020]:
+# In[40]:
 
 
 df = openbb.stocks.dd.pt(symbol=symbol)
@@ -586,7 +622,7 @@ if not df.empty:
 last_price = round(ticker_data["Close"][-1], 2)
 
 
-# In[1021]:
+# In[41]:
 
 
 fig, ax = plt.subplots(figsize=(11, 3), dpi=150)
@@ -603,7 +639,7 @@ fig.savefig(f, format="svg")
 ratings_over_time_chart = f.getvalue().decode("utf-8")
 
 
-# In[1022]:
+# In[42]:
 
 
 fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1, figsize=(11, 3), dpi=150)
@@ -614,7 +650,7 @@ fig.savefig(f, format="svg")
 ta_rsi = f.getvalue().decode("utf-8")
 
 
-# In[1023]:
+# In[43]:
 
 
 df = openbb.ta.rsi(ticker_data["Close"])
@@ -622,7 +658,7 @@ rsi_value = round(df.values[-1][0], 2)
 rsi_value
 
 
-# In[1024]:
+# In[44]:
 
 
 from sklearn.linear_model import LinearRegression
@@ -634,7 +670,7 @@ model = LinearRegression().fit(
 regression_slope = round(model.coef_[0], 2)
 
 
-# In[1025]:
+# In[45]:
 
 
 import pandas as pd
@@ -656,7 +692,7 @@ else:
     df_insider
 
 
-# In[1026]:
+# In[46]:
 
 
 fig, ax = plt.subplots(figsize=(11, 3), dpi=150)
@@ -667,7 +703,7 @@ fig.savefig(f, format="svg")
 finbrain_sentiment = f.getvalue().decode("utf-8")
 
 
-# In[1027]:
+# In[47]:
 
 
 df_sentiment_finbrain = openbb.stocks.ca.sentiment(symbols=[symbol])
@@ -676,7 +712,7 @@ df_sentiment_finbrain = openbb.stocks.ca.sentiment(symbols=[symbol])
 finbrain_sentiment_val = 0
 
 
-# In[1028]:
+# In[48]:
 
 
 (
@@ -695,7 +731,7 @@ else:
 stocktwits_sentiment
 
 
-# In[1029]:
+# In[49]:
 
 
 fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1, figsize=(11, 5), dpi=150)
@@ -706,7 +742,7 @@ fig.savefig(f, format="svg")
 snews = f.getvalue().decode("utf-8")
 
 
-# In[1030]:
+# In[50]:
 
 
 ticker_data_all = openbb.stocks.load(
@@ -716,7 +752,7 @@ ticker_data_all = openbb.stocks.load(
 ticker_data_all["Returns"] = ticker_data_all["Adj Close"].pct_change()
 
 
-# In[1031]:
+# In[51]:
 
 
 fig, ax = plt.subplots(figsize=(11, 3), dpi=150)
@@ -733,7 +769,7 @@ fig.savefig(f, format="svg")
 bw_month = f.getvalue().decode("utf-8")
 
 
-# In[1032]:
+# In[52]:
 
 
 fig, ax = plt.subplots(figsize=(11, 3), dpi=150)
@@ -750,7 +786,7 @@ fig.savefig(f, format="svg")
 bw_year = f.getvalue().decode("utf-8")
 
 
-# In[1033]:
+# In[53]:
 
 
 income_df = openbb.stocks.fa.income(symbol, source="YahooFinance")
@@ -775,7 +811,7 @@ if score:
     score = round(float(score), 2)
 
 
-# In[1034]:
+# In[54]:
 
 
 fig, (ax1, ax2, ax3) = plt.subplots(
@@ -790,7 +826,7 @@ fig.savefig(f, format="svg")
 ma_chart = f.getvalue().decode("utf-8")
 
 
-# In[1035]:
+# In[55]:
 
 
 fig, (ax, ax1) = plt.subplots(nrows=2, ncols=1, figsize=(11, 5), sharex=True, dpi=150)
@@ -801,7 +837,7 @@ fig.savefig(f, format="svg")
 macd_chart = f.getvalue().decode("utf-8")
 
 
-# In[1036]:
+# In[56]:
 
 
 fig, (ax, ax1) = plt.subplots(nrows=2, ncols=1, figsize=(11, 5), sharex=True, dpi=150)
@@ -812,7 +848,7 @@ fig.savefig(f, format="svg")
 cci_chart = f.getvalue().decode("utf-8")
 
 
-# In[1037]:
+# In[57]:
 
 
 fig, (ax, ax1) = plt.subplots(nrows=2, ncols=1, figsize=(11, 5), dpi=150)
@@ -824,7 +860,7 @@ fig.savefig(f, format="svg")
 stoch_chart = f.getvalue().decode("utf-8")
 
 
-# In[1038]:
+# In[58]:
 
 
 fig, (ax, ax1) = plt.subplots(2, 1, sharex=True, figsize=(11, 5), dpi=150)
@@ -835,7 +871,7 @@ fig.savefig(f, format="svg")
 adx_chart = f.getvalue().decode("utf-8")
 
 
-# In[1039]:
+# In[59]:
 
 
 fig, ax = plt.subplots(figsize=(11, 3), dpi=150)
@@ -846,7 +882,7 @@ fig.savefig(f, format="svg")
 bbands_chart = f.getvalue().decode("utf-8")
 
 
-# In[1040]:
+# In[60]:
 
 
 fig, (ax, ax1, ax2) = plt.subplots(3, 1, sharex=True, figsize=(11, 8), dpi=150)
@@ -859,7 +895,7 @@ ad_chart = f.getvalue().decode("utf-8")
 
 # ## Render the report template to a file
 
-# In[1041]:
+# In[78]:
 
 
 body =""
@@ -873,64 +909,82 @@ floppy_disk_img = (
 )
 
 htmlcode = f"""
-<!-- TradingView Widget BEGIN -->
-    <div class="tradingview-widget-container">
-        <div class="tradingview-widget-container__widget"></div>
-        <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/symbols/NYSE-{symbol}/" rel="noopener" target="_blank"><span class="blue-text">AR key facts</span></a> by TradingView</div>
-        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-profile.js" async>
-        {{
-        "width": "1085",
-        "height": "700",
-        "colorTheme": "light",
-        "isTransparent": false,
-        "symbol": "{exchange}:{symbol}",
-        "locale": "en"
-        }}
-        </script>
+<div class="hcontainer">
+    <div class="item">
+        <!-- TradingView Widget BEGIN -->
+            <div class="tradingview-widget-container">
+                <div class="tradingview-widget-container__widget"></div>
+                <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/symbols/NYSE-{symbol}/" rel="noopener" target="_blank"><span class="blue-text">AR key facts</span></a> by TradingView</div>
+                <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-profile.js" async>
+                {{
+                "width": "1085",
+                "height": "500",
+                "colorTheme": "light",
+                "isTransparent": false,
+                "symbol": "{exchange}:{symbol}",
+                "locale": "en"
+                }}
+                </script>
+            </div>
+        <!-- TradingView Widget END -->
     </div>
-<!-- TradingView Widget END -->
+</div>
 """
+htmlcode += widgets.row([widgets.h(3, "Investor Presentation for " + symbol)])
+
+if (investor_report_url): 
+    htmlcode += f"""
+        <div class="hcontainer">
+            <div class="item">
+                <iframe src="{investor_report_url}" width="1085" height="700"></iframe>
+            </div>
+        </div>
+            """
 
 body += widgets.add_tab("Summary", htmlcode, False)
 
 
 htmlcode = f"""
-<!-- TradingView Widget BEGIN -->
-<div class="tradingview-widget-container">
-  <div id="tradingview_fceac"></div>
-  <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/symbols/{exchange}-{symbol}/" rel="noopener" target="_blank"><span class="blue-text">AR stock price</span></a> by TradingView</div>
-  <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-  <script type="text/javascript">
-  new TradingView.MediumWidget(
-    {{
-    "symbols": [
-        [
-        "{long_name}",
-        "{exchange}:{symbol}|1D"
-        ]
-    ],
-    "chartOnly": false,
-    "width": "1085",
-    "height": "700",
-    "locale": "en",
-    "colorTheme": "light",
-    "autosize": false,
-    "showVolume": false,
-    "hideDateRanges": false,
-    "hideMarketStatus": false,
-    "scalePosition": "right",
-    "scaleMode": "Normal",
-    "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
-    "fontSize": "10",
-    "noTimeScale": false,
-    "valuesTracking": "1",
-    "chartType": "line",
-    "container_id": "tradingview_fceac"
-    }}
-  );
-  </script>
+<div class="hcontainer">
+    <div class="item">
+        <!-- TradingView Widget BEGIN -->
+        <div class="tradingview-widget-container">
+        <div id="tradingview_fceac"></div>
+        <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/symbols/{exchange}-{symbol}/" rel="noopener" target="_blank"><span class="blue-text">AR stock price</span></a> by TradingView</div>
+        <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+        <script type="text/javascript">
+        new TradingView.MediumWidget(
+            {{
+            "symbols": [
+                [
+                "{long_name}",
+                "{exchange}:{symbol}|1D"
+                ]
+            ],
+            "chartOnly": false,
+            "width": "1085",
+            "height": "700",
+            "locale": "en",
+            "colorTheme": "light",
+            "autosize": false,
+            "showVolume": false,
+            "hideDateRanges": false,
+            "hideMarketStatus": false,
+            "scalePosition": "right",
+            "scaleMode": "Normal",
+            "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+            "fontSize": "10",
+            "noTimeScale": false,
+            "valuesTracking": "1",
+            "chartType": "line",
+            "container_id": "tradingview_fceac"
+            }}
+        );
+        </script>
+        </div>
+        <!-- TradingView Widget END -->
+    </div>
 </div>
-<!-- TradingView Widget END -->
 """
 
 body += widgets.add_tab("Overview", htmlcode, False)
@@ -947,31 +1001,35 @@ except:
 htmlcode += widgets.row([widgets.h(3, "Twitter News for " + symbol )])
 
 htmlcode += """
-     <div class="tweet-list">
-        {% for tweet in tweets %}
-        <div class="tweet">
-            <div class="tweet-header">
-                <img src="{{ tweet.user.profile_image_url }}" alt="{{ tweet.user.name }}'s profile picture">
-                <h3>{{ tweet.user.name }}</h3>                   
-            </div>       
-            <div class="tweet-body">
-                <p>{{ tweet.full_text }}</p>
-            </div>   
-            {% if tweet.entities.media %}
-                <div class="tweet-media">
-                {% for media in tweet.entities.media %}
-                    <img src="{{ media.media_url_https }}" alt="Tweet media">
-                {% endfor %}
+<div class="hcontainer">
+    <div class="item">
+        <div class="tweet-list">
+            {% for tweet in tweets %}
+            <div class="tweet">
+                <div class="tweet-header">
+                    <img src="{{ tweet.user.profile_image_url }}" alt="{{ tweet.user.name }}'s profile picture">
+                    <h3>{{ tweet.user.name }}</h3>                   
+                </div>       
+                <div class="tweet-body">
+                    <p>{{ tweet.full_text }}</p>
+                </div>   
+                {% if tweet.entities.media %}
+                    <div class="tweet-media">
+                    {% for media in tweet.entities.media %}
+                        <img src="{{ media.media_url_https }}" alt="Tweet media">
+                    {% endfor %}
+                    </div>
+                {% endif %}
+                <div class="tweet-footer">
+                    {% set date = tweet.created_at.strftime('%b %d, %Y at %I:%M %p') %}
+                    <p>{{ date }}</p>
+                    <a href="https://twitter.com/{{ tweet.user.screen_name }}/status/{{ tweet.id }}" target="_blank">View on Twitter</a>
                 </div>
-            {% endif %}
-            <div class="tweet-footer">
-                {% set date = tweet.created_at.strftime('%b %d, %Y at %I:%M %p') %}
-                <p>{{ date }}</p>
-                <a href="https://twitter.com/{{ tweet.user.screen_name }}/status/{{ tweet.id }}" target="_blank">View on Twitter</a>
             </div>
+            {% endfor %}
         </div>
-        {% endfor %}
     </div>
+</div>
         """
 
 body += widgets.add_tab("News and Twitter", htmlcode, False)
@@ -993,24 +1051,28 @@ except:
 
 body += widgets.add_tab("Analyst Opinions", htmlcode, False)
 htmlcode = f"""
-<!-- TradingView Widget BEGIN -->
-    <div class="tradingview-widget-container">
-        <div class="tradingview-widget-container__widget"></div>
-        <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/symbols/{exchange}-{symbol}/financials-overview/" rel="noopener" target="_blank"><span class="blue-text">AR fundamentals</span></a> by TradingView</div>
-        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-financials.js" async>
-        {{
-        "colorTheme": "light",
-        "isTransparent": false,
-        "largeChartUrl": "",
-        "displayMode": "regular",
-        "width": "1085",
-        "height": "800",
-        "symbol": "{exchange}:{symbol}",
-        "locale": "en"
-        }}
-        </script>
+<div class="hcontainer">
+        <div class="item">
+        <!-- TradingView Widget BEGIN -->
+            <div class="tradingview-widget-container">
+                <div class="tradingview-widget-container__widget"></div>
+                <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/symbols/{exchange}-{symbol}/financials-overview/" rel="noopener" target="_blank"><span class="blue-text">AR fundamentals</span></a> by TradingView</div>
+                <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-financials.js" async>
+                {{
+                "colorTheme": "light",
+                "isTransparent": false,
+                "largeChartUrl": "",
+                "displayMode": "regular",
+                "width": "1085",
+                "height": "800",
+                "symbol": "{exchange}:{symbol}",
+                "locale": "en"
+                }}
+                </script>
+            </div>
+        <!-- TradingView Widget END -->
     </div>
-<!-- TradingView Widget END -->
+</div>
 """
 
 try:
@@ -1135,24 +1197,28 @@ htmlcode += widgets.row(
 body += widgets.add_tab("Comparison", htmlcode, False)
 
 htmlcode = f"""
-<!-- TradingView Widget BEGIN -->
-    <div class="tradingview-widget-container">
-        <div class="tradingview-widget-container__widget"></div>
-        <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/symbols/{exchange}-{symbol}/technicals/" rel="noopener" target="_blank"><span class="blue-text">AR stock analysis</span></a> by TradingView</div>
-        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js" async>
-        {{
-        "interval": "1W",
-        "width": "1085",
-        "isTransparent": false,
-        "height": "700",
-        "symbol": "{exchange}:{symbol}",
-        "showIntervalTabs": true,
-        "locale": "en",
-        "colorTheme": "light"
-        }}
-        </script>
+<div class="hcontainer">
+        <div class="item">
+        <!-- TradingView Widget BEGIN -->
+            <div class="tradingview-widget-container">
+                <div class="tradingview-widget-container__widget"></div>
+                <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/symbols/{exchange}-{symbol}/technicals/" rel="noopener" target="_blank"><span class="blue-text">AR stock analysis</span></a> by TradingView</div>
+                <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js" async>
+                {{
+                "interval": "1W",
+                "width": "1085",
+                "isTransparent": false,
+                "height": "700",
+                "symbol": "{exchange}:{symbol}",
+                "showIntervalTabs": true,
+                "locale": "en",
+                "colorTheme": "light"
+                }}
+                </script>
+            </div>
+        <!-- TradingView Widget END -->
     </div>
-<!-- TradingView Widget END -->
+</div>
         """
 
 htmlcode += widgets.row([widgets.h(3, f"Moving Averages for {symbol}") + ma_chart])
