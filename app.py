@@ -226,9 +226,16 @@ async def get_option_chain(symbol_name: str):
     options_data['lastTradeDate_c'] = options_data['lastTradeDate_c'].dt.date
     
     today = date.today()
-    filtered_df = options_data[options_data['lastTradeDate_c'] == today]
+    weekday = date.weekday(today)
+    if weekday == 5 or weekday == 6:
+        print ("weekday " + str(weekday))
+        friday = today - timedelta(days=today.weekday() - 5)
+        filtered_df = options_data[options_data['lastTradeDate_c'] == friday]
+    else:
+        filtered_df = options_data[options_data['lastTradeDate_c'] == today]
+
     if (filtered_df.empty):
-       filtered_df= options_data.head(20)
+       filtered_df= options_data.head(50)
     
     return {filtered_df.to_json(date_unit="s", date_format="iso",orient="values")}
 
