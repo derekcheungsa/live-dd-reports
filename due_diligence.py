@@ -78,6 +78,7 @@ symbol = sys.argv[1]
 
 # Customize 
 exchange_dict = { 'TSLA' : 'NASDAQ',
+                  'GOOG' : 'NASDAQ',
                   'TMDX' : 'NASDAQ'}
 
 similar_companies_dict={
