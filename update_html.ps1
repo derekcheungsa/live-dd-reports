@@ -1,6 +1,6 @@
 # List of parameters
-#$param_list = "AR AROC CMRE EGY EPR EPD ET FLNG FTCO HDSN GSL KNTK IBM INSW MP MPW MPLX TSLA TRTN OXY V VET ZIM"
-$param_list = "TSLA"
+$param_list = "AM AR AROC CMRE EGY EPR EPD ET FLNG FTCO HDSN GSL KNTK IBM INSW MP MPW MPLX TSLA TRTN OXY V VET ZIM"
+#$param_list = "TSLA"
 
 
 # Splitting the string
