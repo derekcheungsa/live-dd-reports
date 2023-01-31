@@ -115,6 +115,7 @@ investor_report_url_dict ={'TRTN': 'https://www.tritoninternational.com/sites/tr
                             'AR' : 'https://d1io3yog0oux5.cloudfront.net/_6cc4d707f40f7cc56aebe36b019cb270/anteroresources/db/641/5970/pdf/AR+Investor+Presentation_Dec_12.01.2022_vF3.pdf'}
 
 morningstar_report_url_dict ={'TSLA': 'https://drive.google.com/file/d/1Hppn9KbAXpg-44Z1MGy-e1LXyZQheLXn/preview',
+                              'ABBV': 'https://drive.google.com/file/d/1HuM7nOyGpGgBIAaUdg6LumohZkCCqKwe/preview',
                               'TRTN': 'https://drive.google.com/file/d/1Hppn9KbAXpg-44Z1MGy-e1LXyZQheLXn/preview',
                               'MP' :  'https://drive.google.com/file/d/1X30f9SFsY7dlGSyl-7i1QkItEi-QZBCY/preview',
                               'MSFT': 'https://drive.google.com/file/d/13Ay0BFGV-3RuES6Q1Ak92kKoLgHbAO3k/preview'}
