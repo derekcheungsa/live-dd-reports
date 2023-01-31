@@ -79,6 +79,7 @@ symbol = sys.argv[1]
 # Customize 
 exchange_dict = { 'TSLA' : 'NASDAQ',
                   'GOOG' : 'NASDAQ',
+                  'MSFT' : 'NASDAQ',
                   'TMDX' : 'NASDAQ'}
 
 similar_companies_dict={
@@ -114,6 +115,7 @@ investor_report_url_dict ={'TRTN': 'https://www.tritoninternational.com/sites/tr
 
 morningstar_report_url_dict ={'TSLA': 'https://drive.google.com/file/d/1Hppn9KbAXpg-44Z1MGy-e1LXyZQheLXn/preview',
                               'TRTN': 'https://drive.google.com/file/d/1Hppn9KbAXpg-44Z1MGy-e1LXyZQheLXn/preview',
+                              'MP' :  'https://drive.google.com/file/d/1X30f9SFsY7dlGSyl-7i1QkItEi-QZBCY/preview',
                               'MSFT': 'https://drive.google.com/file/d/13Ay0BFGV-3RuES6Q1Ak92kKoLgHbAO3k/preview'}
 
 if (symbol in investor_report_url_dict):
