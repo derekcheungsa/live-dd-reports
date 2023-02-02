@@ -21,8 +21,14 @@ Tradingview real-time widgets, and Google Sheets so that there are additional in
    **Backend:**
    
    The backend is very simple.  It uses FastAPI and only has one main routine that handles the serving of the html page.  
-   You can deploy this in one of many Clouds.  As an example, you can deploy on render.com
+   You can deploy this in one of many Clouds.  Or you can deploy locally
 
+   Locally, in a terminal
+   1. pip install fastapi[all]
+   2. uvicorn app:app --host 127.0.0.1 --port 80
+   3. Point your browser to 127.0.0.1:80/tweet/symbol-name
+
+   On the cloud,  you can deploy on render.com
    1. Select a python 3.9 image
    2. Specify the build command to be build.sh
    3. Add in the Twitter API keys in the environment variables (TWITTER_KEY,TWITTER_SECRET,TWITTER_ACCESS_TOKEN, TWITTER_ACCESS_SECRET)
