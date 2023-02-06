@@ -1084,7 +1084,7 @@ if(morningstar_report_url):
             </div>
                 """
 else:
-    htmlCode = widgets.row([widgets.h(3, "Morningstar analysis not available ")])
+    htmlcode = widgets.row([widgets.h(3, "Morningstar analysis not available ")])
     
 htmlcode += widgets.row([widgets.h(3, "Price Target Chart") + price_target_chart])
 htmlcode += widgets.row(
