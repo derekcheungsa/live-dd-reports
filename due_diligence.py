@@ -1072,7 +1072,7 @@ htmlcode += """
 
 body += widgets.add_tab("News and Twitter", htmlcode, False)
 
-htmlCode =""
+
 
 if(morningstar_report_url):
     htmlcode = widgets.row([widgets.h(3, "Morningstar analysis " + symbol)])
@@ -1083,7 +1083,9 @@ if(morningstar_report_url):
                 </div>
             </div>
                 """
-
+else:
+    htmlCode = widgets.row([widgets.h(3, "Morningstar analysis not available ")])
+    
 htmlcode += widgets.row([widgets.h(3, "Price Target Chart") + price_target_chart])
 htmlcode += widgets.row(
     [widgets.h(3, "Analyst Ratings over time") + ratings_over_time_chart]
@@ -1102,6 +1104,7 @@ except:
 
 
 body += widgets.add_tab("Analyst Opinions", htmlcode, False)
+
 htmlcode = f"""
 <div class="hcontainer">
         <div class="item">
