@@ -80,7 +80,7 @@ symbol = sys.argv[1]
 investor_report_url_dict= dhelp.get_investor_report_url_dict()
 morningstar_report_url_dict=dhelp.get_morningstar_report_url_dict()
 exchange_dict=dhelp.get_exchange_dict()
-similar_companies=dhelp.get_similar_companies_dict()
+similar_companies_dict=dhelp.get_similar_companies_dict()
 
 if (symbol in investor_report_url_dict):
     investor_report_url = investor_report_url_dict[symbol]
