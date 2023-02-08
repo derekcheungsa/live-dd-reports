@@ -1,14 +1,34 @@
 """ Seeking Alpha Model """
 __docformat__ = "numpy"
 
+from datetime import datetime
 import logging
 import requests
 import pandas as pd
+import numpy as np
+import json
+from typing import List, Optional
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import lambda_long_number_format
+from openbb_terminal.config_plot import PLOT_DPI
+from openbb_terminal.helper_funcs import (
+    export_data,
+    plot_autoscale,
+    is_valid_axes_count,
+    print_rich_table,
+)
+import matplotlib.pyplot as plt
+from openbb_terminal.config_terminal import theme
 
 logger = logging.getLogger(__name__)
+
+metricDict = {  'ROE' : 'return_on_equity',
+                'PE'  : 'pe_ratio',
+                'EV_EBITDA': 'ev_ebitda',
+                'OSS' : 'diluted_weighted_average_shares_outstanding',
+                'ROIC': 'return_on_total_capital',
+                'ROA' : 'return_on_avg_tot_assets'}
 
 # Customize 
 def get_exchange_dict () :
@@ -23,6 +43,7 @@ def get_exchange_dict () :
 def get_similar_companies_dict():
     return {'AM' : ['EPD','ET','ENB','PBA','MPLX'],
             'AR': ['RRC', 'EQT','SWN','CNX','CHK'],
+            'CMRE': ['DAC','GSL','EGLE'],
             'FLNG' : ['GLNG','SFL'],
             'FTCO': ['GOLD','KGC','AU','AEM','NEM'],
             'GSL' : ['DAC','CMRE','SFL'],
@@ -63,42 +84,103 @@ def get_morningstar_report_url_dict():
             'MSFT': 'https://drive.google.com/file/d/13Ay0BFGV-3RuES6Q1Ak92kKoLgHbAO3k/preview'
             }
 
-def get_historical_metric(ticker: str, metric:str) -> pd.DataFrame:
+
+def display_historical_metric(tickerList: str, metricShort:str, external_axes : Optional[List[plt.Axes]]):
+    metric=metricDict[metricShort]
+    
+    df=get_historical_metric(tickerList, metric)
+    unit = ""
+
+    if not external_axes:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:    
+        (ax,) = external_axes    # This plot has 1 axis
+    
+    companies_names = df.columns.to_list()
+    for col in df.columns:
+        if col == 'date':
+            continue
+        if(metricShort == "OSS"):
+            ax.plot(df['date'].str[:-3], df[col]/1000000, label=col)
+            unit = "[M]"
+        else:
+            ax.plot(df['date'].str[:-3], df[col], label=col)
+            unit = "[%]"
+
+    ax.set_title("Historical " + metricShort)
+    ax.set_ylabel(metricShort + " " + unit)
+    ax.tick_params(axis='x', labelsize=9)
+    ax.tick_params(axis='y', labelsize=9)
+    # ensures that the historical data starts from same datapoint
+    ax.set_xlim([df.index[0], df.index[-1]])
+
+    ax.legend()
+    theme.style_primary_axis(ax)
+
+    if not external_axes:
+        theme.visualize_output()
+
+
+def get_historical_metric(tickerList: str, metric:str ) -> pd.DataFrame:
+    
     url = "https://seekingalpha.com/api/v3/symbol_data/charting"
 
-    querystring = {
-      "end": "2023-02-04",
-      "metrics": metric,
-      "slugs[]" : ticker,
-      "start":   "2018-01-30",
-    }
+    df = pd.DataFrame()
+    first_time = True
+    date_length = 0    
 
-    payload = ""
-    headers = {
-        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:106.0) Gecko/20100101 Firefox/106.0",
-        "Accept": "*/*",
-        "Accept-Language": "de,en-US;q=0.7,en;q=0.3",
-        "Accept-Encoding": "gzip, deflate, br",
-        "Sec-Fetch-Dest": "empty",
-        "Sec-Fetch-Mode": "cors",
-        "Sec-Fetch-Site": "same-origin",
-        "Connection": "keep-alive",
-    }
+    for ticker in tickerList:
+        querystring = {
+        "end": datetime.now().strftime("%Y-%m-%d"),
+        "metrics": metric,
+        "slugs[]" : ticker,
+        "start":   "2018-01-30",
+        }
 
-    response = requests.request(
-        "GET", url, data=payload, headers=headers, params=querystring
-    )
+        payload = ""
+        headers = {
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:106.0) Gecko/20100101 Firefox/106.0",
+            "Accept": "*/*",
+            "Accept-Language": "de,en-US;q=0.7,en;q=0.3",
+            "Accept-Encoding": "gzip, deflate, br",
+            "Sec-Fetch-Dest": "empty",
+            "Sec-Fetch-Mode": "cors",
+            "Sec-Fetch-Site": "same-origin",
+            "Connection": "keep-alive",
+        }
 
-    seek_object = response.json()["data"][ticker.lower()][metric]
-    dict = eval(seek_object)
-    df = pd.DataFrame({'values': list(dict.values())}, index=dict.keys())
-    #output = pd.DataFrame.from_dict(seek_object)
-    #output.index = ["Date", metric ]
-    print(df)
+        response = requests.request(
+            "GET", url, data=payload, headers=headers, params=querystring
+        )
 
+        seek_object = response.json()["data"][ticker.lower()][metric]
+            
+        # add the dates and first
+        if first_time:
+            date_array  = [] 
+        
+        metric_array= []
+        for key, value in seek_object.items():
+            date_array.append(key)
+            metric_array.append(value)
+        
+        if first_time:
+            df["date"]  = date_array
+            date_length = len(date_array)
+        
+        metric_array_len = len(metric_array)
+        if (date_length == metric_array_len):
+            df[ticker] = metric_array   
+            
+        first_time = False         
 
+    return df    
+    
+    
+    
+   
 @log_start_end(log=logger)
-def get_estimates_eps(ticker: str, quarterly: bool) -> pd.DataFrame:
+def get_estimates_eps(ticker: str) -> pd.DataFrame:
     """Takes the ticker, asks for seekingalphaID and gets eps estimates
 
     Parameters
@@ -116,15 +198,11 @@ def get_estimates_eps(ticker: str, quarterly: bool) -> pd.DataFrame:
     """
 
     url = "https://seekingalpha.com/api/v3/symbol_data/estimates"
-    if (quarterly):
-        time_period = "quarterly"
-    else:
-        time_period = "annual"
 
     querystring = {
         "estimates_data_items": "eps_normalized_actual,eps_normalized_consensus_low,eps_normalized_consensus_mean,"
         "eps_normalized_consensus_high,eps_normalized_num_of_estimates",
-        "period_type": time_period,
+        "period_type": "quarterly",
         "relative_periods": "-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10,11",
     }
 
@@ -430,5 +508,3 @@ def get_seekingalpha_id(ticker: str) -> str:
         seekingalphaID = "0"
 
     return seekingalphaID
-
-

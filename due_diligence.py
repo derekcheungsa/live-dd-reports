@@ -3,7 +3,7 @@
 
 # ## Notebook setup
 
-# In[424]:
+# In[1]:
 
 
 import os
@@ -57,7 +57,7 @@ warnings.filterwarnings("ignore")
 predictions = False
 
 
-# In[425]:
+# In[2]:
 
 
 cfg.theme = TerminalStyle("light", "light", "light")
@@ -69,7 +69,7 @@ stylesheet = widgets.html_report_stylesheet()
 
 # 
 
-# In[426]:
+# In[3]:
 
 
 # Parameters that will be replaced when calling this notebook
@@ -105,7 +105,7 @@ else:
 report_name = f"{symbol}".upper()
 
 
-# In[427]:
+# In[4]:
 
 
 if "." in symbol:
@@ -115,7 +115,7 @@ if "." in symbol:
 symbol = symbol.upper()
 
 
-# In[428]:
+# In[5]:
 
 
 ticker_data = openbb.stocks.load(
@@ -133,7 +133,7 @@ report_title, report_date, report_time, report_timezone
 
 # ## Data
 
-# In[429]:
+# In[6]:
 
 
 (
@@ -144,7 +144,7 @@ report_title, report_date, report_time, report_timezone
 df_quarter_revenues
 
 
-# In[430]:
+# In[7]:
 
 
 display_year = sorted(df_year_estimates.columns.tolist())[:3]
@@ -152,7 +152,7 @@ df_year_estimates = df_year_estimates[display_year].head(5)
 df_year_estimates
 
 
-# In[431]:
+# In[8]:
 
 
 tables = openbb.etf.news(f"{long_name}", 20)
@@ -162,7 +162,7 @@ for table in tables:
     )
 
 
-# In[432]:
+# In[9]:
 
 
 df_institutional_shareholders = openbb.stocks.fa.shrs(symbol, holder="institutional")
@@ -170,13 +170,27 @@ df_institutional_shareholders.index += 1
 df_institutional_shareholders
 
 
-# In[433]:
+# In[10]:
 
 
 openbb.stocks.fa.shrs(symbol)
 
 
-# In[434]:
+# In[11]:
+
+
+fig, ax = plt.subplots(figsize=(14, 5), dpi=150)
+dhelp.display_historical_metric([symbol],"OSS", external_axes=[
+        ax,
+    ])
+
+fig.tight_layout()
+f = io.BytesIO()
+fig.savefig(f, format="svg")
+shares_outstanding_chart = f.getvalue().decode("utf-8")
+
+
+# In[12]:
 
 
 df_institutional_shareholders = openbb.stocks.fa.shrs(symbol)
@@ -184,7 +198,7 @@ df_institutional_shareholders.index += 1
 df_institutional_shareholders
 
 
-# In[435]:
+# In[13]:
 
 
 df_sec_filings = openbb.stocks.dd.sec(symbol=symbol)
@@ -198,20 +212,20 @@ if (len(df_sec_filings) > 0):
 df_sec_filings
 
 
-# In[436]:
+# In[14]:
 
 
 df_analyst = openbb.stocks.dd.analyst(symbol=symbol)
 
 
-# In[437]:
+# In[15]:
 
 
 df_rating = openbb.stocks.dd.rating(symbol)
 df_rating
 
 
-# In[438]:
+# In[16]:
 
 
 fig, ax = plt.subplots(figsize=(11, 3), dpi=150)
@@ -228,7 +242,7 @@ fig.savefig(f, format="svg")
 pcr_chart = f.getvalue().decode("utf-8")
 
 
-# In[439]:
+# In[17]:
 
 
 expiry_dates = openbb.stocks.options.expirations(symbol)
@@ -239,7 +253,7 @@ else:
     option_chain = pd.DataFrame()
 
 
-# In[440]:
+# In[18]:
 
 
 if not option_chain.empty:
@@ -257,7 +271,7 @@ if not option_chain.empty:
     vol_chart = f.getvalue().decode("utf-8")
 
 
-# In[441]:
+# In[19]:
 
 
 if not option_chain.empty:
@@ -271,7 +285,7 @@ if not option_chain.empty:
     voi_chart = f.getvalue().decode("utf-8")
 
 
-# In[442]:
+# In[20]:
 
 
 fig, ax1 = plt.subplots(figsize=(11, 5), dpi=150)
@@ -290,7 +304,7 @@ fig.savefig(f, format="svg")
 net_short_position = f.getvalue().decode("utf-8")
 
 
-# In[443]:
+# In[21]:
 
 
 fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1, figsize=(11, 5), dpi=150)
@@ -302,7 +316,7 @@ fig.savefig(f, format="svg")
 dark_pools = f.getvalue().decode("utf-8")
 
 
-# In[444]:
+# In[22]:
 
 
 fig, ax = plt.subplots(figsize=(11, 3), dpi=150)
@@ -319,7 +333,7 @@ fig.savefig(f, format="svg")
 gtrades_chart = f.getvalue().decode("utf-8")
 
 
-# In[445]:
+# In[23]:
 
 
 fig, ax = plt.subplots(figsize=(11, 3), dpi=150)
@@ -336,7 +350,7 @@ fig.savefig(f, format="svg")
 gov_contracts_chart = f.getvalue().decode("utf-8")
 
 
-# In[446]:
+# In[24]:
 
 
 fig, ax = plt.subplots(figsize=(11, 3), dpi=150)
@@ -352,7 +366,7 @@ fig.savefig(f, format="svg")
 google_mentions_chart = f.getvalue().decode("utf-8")
 
 
-# In[447]:
+# In[25]:
 
 
 fig, ax = plt.subplots(figsize=(11, 3), dpi=150)
@@ -369,7 +383,7 @@ fig.savefig(f, format="svg")
 google_regions_chart = f.getvalue().decode("utf-8")
 
 
-# In[448]:
+# In[26]:
 
 
 if (symbol in similar_companies_dict):
@@ -392,7 +406,7 @@ fig.savefig(f, format="svg")
 historical_similar = f.getvalue().decode("utf-8")
 
 
-# In[449]:
+# In[27]:
 
 
 fig, ax = plt.subplots(figsize=(11, 5), dpi=150)
@@ -408,7 +422,7 @@ fig.savefig(f, format="svg")
 hcorr_similar = f.getvalue().decode("utf-8")
 
 
-# In[450]:
+# In[28]:
 
 
 fig, ax = plt.subplots(figsize=(11, 5), dpi=150)
@@ -424,7 +438,7 @@ fig.savefig(f, format="svg")
 vol_similar = f.getvalue().decode("utf-8")
 
 
-# In[451]:
+# In[29]:
 
 
 fig, ax = plt.subplots(figsize=(11, 5), dpi=150)
@@ -440,7 +454,7 @@ fig.savefig(f, format="svg")
 scorr_similar = f.getvalue().decode("utf-8")
 
 
-# In[452]:
+# In[30]:
 
 
 valuation_comparison = openbb.stocks.ca.screener(similar_companies, "valuation")
@@ -457,7 +471,7 @@ valuation_comparison = valuation_comparison.style.format({"EPS this Y": "${:,.2f
 valuation_comparison
 
 
-# In[453]:
+# In[31]:
 
 
 financial_comparison = openbb.stocks.ca.screener(similar_companies, "financial")
@@ -474,7 +488,7 @@ financial_comparison= financial_comparison.fillna("")
 financial_comparison
 
 
-# In[454]:
+# In[32]:
 
 
 ownership_comparison = openbb.stocks.ca.screener(similar_companies, "ownership")
@@ -483,7 +497,7 @@ ownership_comparison= ownership_comparison.fillna("")
 ownership_comparison
 
 
-# In[455]:
+# In[33]:
 
 
 performance_comparison = openbb.stocks.ca.screener(similar_companies, "performance")
@@ -498,7 +512,14 @@ performance_comparison= performance_comparison.fillna("")
 performance_comparison
 
 
-# In[456]:
+# In[34]:
+
+
+df_historical_metrics = openbb.stocks.fa.metrics(symbol)
+df_historical_metrics
+
+
+# In[35]:
 
 
 try:
@@ -509,7 +530,7 @@ except:
     pass
 
 
-# In[457]:
+# In[36]:
 
 
 try:
@@ -520,7 +541,7 @@ except:
     pass
 
 
-# In[458]:
+# In[37]:
 
 
 fig, ax = plt.subplots(figsize=(11, 3), dpi=150)
@@ -536,14 +557,14 @@ fig.savefig(f, format="svg")
 gov_histcont_chart = f.getvalue().decode("utf-8")
 
 
-# In[459]:
+# In[38]:
 
 
 df_lobbying = openbb.stocks.gov.lobbying(symbol, limit=5)
 df_lobbying
 
 
-# In[460]:
+# In[39]:
 
 
 fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1, figsize=(11, 5), dpi=150)
@@ -559,7 +580,7 @@ fig.savefig(f, format="svg")
 price_vs_short_interest = f.getvalue().decode("utf-8")
 
 
-# In[461]:
+# In[40]:
 
 
 fig, (candles, volume) = plt.subplots(nrows=2, ncols=1, figsize=(11, 5), dpi=150)
@@ -577,7 +598,7 @@ fig.savefig(f, format="svg")
 price_chart = f.getvalue().decode("utf-8")
 
 
-# In[462]:
+# In[41]:
 
 
 fig, ax = plt.subplots(figsize=(11, 3), dpi=150)
@@ -595,7 +616,7 @@ fig.savefig(f, format="svg")
 price_target_chart = f.getvalue().decode("utf-8")
 
 
-# In[463]:
+# In[42]:
 
 
 df = openbb.stocks.dd.pt(symbol=symbol)
@@ -618,7 +639,7 @@ if not df.empty:
 last_price = round(ticker_data["Close"][-1], 2)
 
 
-# In[464]:
+# In[43]:
 
 
 fig, ax = plt.subplots(figsize=(11, 3), dpi=150)
@@ -635,7 +656,7 @@ fig.savefig(f, format="svg")
 ratings_over_time_chart = f.getvalue().decode("utf-8")
 
 
-# In[465]:
+# In[44]:
 
 
 fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1, figsize=(11, 3), dpi=150)
@@ -646,7 +667,7 @@ fig.savefig(f, format="svg")
 ta_rsi = f.getvalue().decode("utf-8")
 
 
-# In[466]:
+# In[45]:
 
 
 df = openbb.ta.rsi(ticker_data["Close"])
@@ -654,7 +675,7 @@ rsi_value = round(df.values[-1][0], 2)
 rsi_value
 
 
-# In[467]:
+# In[46]:
 
 
 from sklearn.linear_model import LinearRegression
@@ -666,7 +687,7 @@ model = LinearRegression().fit(
 regression_slope = round(model.coef_[0], 2)
 
 
-# In[468]:
+# In[47]:
 
 
 import pandas as pd
@@ -688,7 +709,7 @@ else:
     df_insider
 
 
-# In[469]:
+# In[48]:
 
 
 fig, ax = plt.subplots(figsize=(11, 3), dpi=150)
@@ -699,7 +720,7 @@ fig.savefig(f, format="svg")
 finbrain_sentiment = f.getvalue().decode("utf-8")
 
 
-# In[470]:
+# In[49]:
 
 
 df_sentiment_finbrain = openbb.stocks.ca.sentiment(symbols=[symbol])
@@ -708,7 +729,7 @@ df_sentiment_finbrain = openbb.stocks.ca.sentiment(symbols=[symbol])
 finbrain_sentiment_val = 0
 
 
-# In[471]:
+# In[50]:
 
 
 (
@@ -727,7 +748,7 @@ else:
 stocktwits_sentiment
 
 
-# In[472]:
+# In[51]:
 
 
 fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1, figsize=(11, 5), dpi=150)
@@ -738,7 +759,7 @@ fig.savefig(f, format="svg")
 snews = f.getvalue().decode("utf-8")
 
 
-# In[473]:
+# In[52]:
 
 
 ticker_data_all = openbb.stocks.load(
@@ -748,7 +769,7 @@ ticker_data_all = openbb.stocks.load(
 ticker_data_all["Returns"] = ticker_data_all["Adj Close"].pct_change()
 
 
-# In[474]:
+# In[53]:
 
 
 fig, ax = plt.subplots(figsize=(11, 3), dpi=150)
@@ -765,7 +786,7 @@ fig.savefig(f, format="svg")
 bw_month = f.getvalue().decode("utf-8")
 
 
-# In[475]:
+# In[54]:
 
 
 fig, ax = plt.subplots(figsize=(11, 3), dpi=150)
@@ -782,7 +803,7 @@ fig.savefig(f, format="svg")
 bw_year = f.getvalue().decode("utf-8")
 
 
-# In[476]:
+# In[55]:
 
 
 income_df = openbb.stocks.fa.income(symbol, source="YahooFinance")
@@ -807,14 +828,14 @@ if score:
     score = round(float(score), 2)
 
 
-# In[477]:
+# In[56]:
 
 
 hist_ratios = openbb.stocks.fa.ratios(symbol)
 hist_ratios
 
 
-# In[478]:
+# In[57]:
 
 
 fig, (ax1, ax2, ax3) = plt.subplots(
@@ -829,7 +850,7 @@ fig.savefig(f, format="svg")
 ma_chart = f.getvalue().decode("utf-8")
 
 
-# In[479]:
+# In[58]:
 
 
 fig, (ax, ax1) = plt.subplots(nrows=2, ncols=1, figsize=(11, 5), sharex=True, dpi=150)
@@ -840,7 +861,7 @@ fig.savefig(f, format="svg")
 macd_chart = f.getvalue().decode("utf-8")
 
 
-# In[480]:
+# In[59]:
 
 
 fig, (ax, ax1) = plt.subplots(nrows=2, ncols=1, figsize=(11, 5), sharex=True, dpi=150)
@@ -851,7 +872,7 @@ fig.savefig(f, format="svg")
 cci_chart = f.getvalue().decode("utf-8")
 
 
-# In[481]:
+# In[60]:
 
 
 fig, (ax, ax1) = plt.subplots(nrows=2, ncols=1, figsize=(11, 5), dpi=150)
@@ -863,7 +884,7 @@ fig.savefig(f, format="svg")
 stoch_chart = f.getvalue().decode("utf-8")
 
 
-# In[482]:
+# In[61]:
 
 
 fig, (ax, ax1) = plt.subplots(2, 1, sharex=True, figsize=(11, 5), dpi=150)
@@ -874,7 +895,7 @@ fig.savefig(f, format="svg")
 adx_chart = f.getvalue().decode("utf-8")
 
 
-# In[483]:
+# In[62]:
 
 
 fig, ax = plt.subplots(figsize=(11, 3), dpi=150)
@@ -885,7 +906,7 @@ fig.savefig(f, format="svg")
 bbands_chart = f.getvalue().decode("utf-8")
 
 
-# In[484]:
+# In[63]:
 
 
 fig, (ax, ax1, ax2) = plt.subplots(3, 1, sharex=True, figsize=(11, 8), dpi=150)
@@ -898,7 +919,7 @@ ad_chart = f.getvalue().decode("utf-8")
 
 # ## Render the report template to a file
 
-# In[485]:
+# In[64]:
 
 
 body =""
@@ -1095,6 +1116,13 @@ htmlcode = f"""
 
 try:
     htmlcode += widgets.row(
+        [widgets.h(3, "Shares outstanding ") + shares_outstanding_chart]
+    )
+except:
+    pass
+
+try:
+    htmlcode += widgets.row(
         [widgets.h(3, "Estimates") + df_year_estimates.head().to_html()]
     )
 except:
@@ -1140,6 +1168,8 @@ except:
 
 htmlcode += widgets.row([widgets.h(3, "Ratios") + hist_ratios.to_html(escape=False)])
 
+htmlcode += widgets.row([widgets.h(3, "Metrics") + df_historical_metrics.to_html(escape=False)])
+
 body += widgets.add_tab("Fundamental Analysis", htmlcode, False)
 
 htmlcode = widgets.row([widgets.h(3, "Put to call ratio") + pcr_chart])
@@ -1160,9 +1190,6 @@ htmlcode = widgets.row([net_short_position])
 htmlcode += widgets.row([price_vs_short_interest])
 body += widgets.add_tab("Shorts", htmlcode, False)
 
-#htmlcode = """
-#   <iframe src="https://ycharts.com/companies/TRTN/chart/" width="1085" height="700"></iframe>
-#        """
 
 try:
     htmlcode += widgets.row([widgets.h(3, "Valuation Comparison") + valuation_comparison.to_html()])
