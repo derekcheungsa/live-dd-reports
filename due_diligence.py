@@ -75,7 +75,7 @@ stylesheet = widgets.html_report_stylesheet()
 # Parameters that will be replaced when calling this notebook
 # Do not leave parameters blank as notebook will not run otherwise
 symbol = sys.argv[1]
-#symbol = "AROC"
+#symbol = "GSL"
 
 investor_report_url_dict= dhelp.get_investor_report_url_dict()
 morningstar_report_url_dict=dhelp.get_morningstar_report_url_dict()

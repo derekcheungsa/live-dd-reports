@@ -9,6 +9,7 @@ import numpy as np
 import json
 from typing import List, Optional
 
+from openbb_terminal.helper_funcs import get_user_agent
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import lambda_long_number_format
 from openbb_terminal.config_plot import PLOT_DPI
@@ -95,7 +96,7 @@ def display_historical_metric(tickerList: str, metricShort:str, external_axes : 
     df=get_historical_metric(tickerList, metric)
     if df.empty:
         return
-        
+
     unit = ""
 
     if not external_axes:
@@ -240,7 +241,7 @@ def get_estimates_eps(ticker: str) -> pd.DataFrame:
     }
 
     # semi random user agent -- disabled and static user agent because it might be the reason for 403
-    # headers["User-Agent"] = get_user_agent()
+    headers["User-Agent"] = get_user_agent()
 
     response = requests.request(
         "GET", url, data=payload, headers=headers, params=querystring
