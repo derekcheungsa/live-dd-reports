@@ -93,6 +93,9 @@ def display_historical_metric(tickerList: str, metricShort:str, external_axes : 
     metric=metricDict[metricShort]
     
     df=get_historical_metric(tickerList, metric)
+    if df.empty:
+        return
+        
     unit = ""
 
     if not external_axes:
@@ -191,8 +194,6 @@ def get_historical_metric(tickerList: str, metric:str ) -> pd.DataFrame:
         first_time = False         
 
     return df    
-    
-    
     
    
 @log_start_end(log=logger)
