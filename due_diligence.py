@@ -179,7 +179,7 @@ openbb.stocks.fa.shrs(symbol)
 # In[11]:
 
 
-fig, ax = plt.subplots(figsize=(14, 5), dpi=150)
+fig, ax = plt.subplots(figsize=(11,5), dpi=150)
 dhelp.display_historical_metric([symbol],"OSS", external_axes=[
         ax,
     ])
@@ -409,6 +409,48 @@ historical_similar = f.getvalue().decode("utf-8")
 # In[27]:
 
 
+fig, ax = plt.subplots(figsize=(11,5), dpi=150)
+dhelp.display_historical_metric(similar_companies,"ROIC", external_axes=[
+        ax,
+    ])
+
+fig.tight_layout()
+f = io.BytesIO()
+fig.savefig(f, format="svg")
+roic_chart = f.getvalue().decode("utf-8")
+
+
+# In[28]:
+
+
+fig, ax = plt.subplots(figsize=(11,5), dpi=150)
+dhelp.display_historical_metric(similar_companies,"ROE", external_axes=[
+        ax,
+    ])
+
+fig.tight_layout()
+f = io.BytesIO()
+fig.savefig(f, format="svg")
+roe_chart = f.getvalue().decode("utf-8")
+
+
+# In[29]:
+
+
+fig, ax = plt.subplots(figsize=(11,5), dpi=150)
+dhelp.display_historical_metric(similar_companies,"EBITDA_MARGIN", external_axes=[
+        ax,
+    ])
+
+fig.tight_layout()
+f = io.BytesIO()
+fig.savefig(f, format="svg")
+ebitda_margin_chart = f.getvalue().decode("utf-8")
+
+
+# In[30]:
+
+
 fig, ax = plt.subplots(figsize=(11, 5), dpi=150)
 openbb.stocks.ca.hcorr_chart(
     similar_companies,
@@ -422,7 +464,7 @@ fig.savefig(f, format="svg")
 hcorr_similar = f.getvalue().decode("utf-8")
 
 
-# In[28]:
+# In[31]:
 
 
 fig, ax = plt.subplots(figsize=(11, 5), dpi=150)
@@ -438,7 +480,7 @@ fig.savefig(f, format="svg")
 vol_similar = f.getvalue().decode("utf-8")
 
 
-# In[29]:
+# In[32]:
 
 
 fig, ax = plt.subplots(figsize=(11, 5), dpi=150)
@@ -454,7 +496,7 @@ fig.savefig(f, format="svg")
 scorr_similar = f.getvalue().decode("utf-8")
 
 
-# In[30]:
+# In[33]:
 
 
 valuation_comparison = openbb.stocks.ca.screener(similar_companies, "valuation")
@@ -471,7 +513,7 @@ valuation_comparison = valuation_comparison.style.format({"EPS this Y": "${:,.2f
 valuation_comparison
 
 
-# In[31]:
+# In[34]:
 
 
 financial_comparison = openbb.stocks.ca.screener(similar_companies, "financial")
@@ -488,7 +530,7 @@ financial_comparison= financial_comparison.fillna("")
 financial_comparison
 
 
-# In[32]:
+# In[35]:
 
 
 ownership_comparison = openbb.stocks.ca.screener(similar_companies, "ownership")
@@ -497,7 +539,7 @@ ownership_comparison= ownership_comparison.fillna("")
 ownership_comparison
 
 
-# In[33]:
+# In[36]:
 
 
 performance_comparison = openbb.stocks.ca.screener(similar_companies, "performance")
@@ -512,14 +554,14 @@ performance_comparison= performance_comparison.fillna("")
 performance_comparison
 
 
-# In[34]:
+# In[37]:
 
 
 df_historical_metrics = openbb.stocks.fa.metrics(symbol)
 df_historical_metrics
 
 
-# In[35]:
+# In[38]:
 
 
 try:
@@ -530,7 +572,7 @@ except:
     pass
 
 
-# In[36]:
+# In[39]:
 
 
 try:
@@ -541,7 +583,7 @@ except:
     pass
 
 
-# In[37]:
+# In[40]:
 
 
 fig, ax = plt.subplots(figsize=(11, 3), dpi=150)
@@ -557,14 +599,14 @@ fig.savefig(f, format="svg")
 gov_histcont_chart = f.getvalue().decode("utf-8")
 
 
-# In[38]:
+# In[41]:
 
 
 df_lobbying = openbb.stocks.gov.lobbying(symbol, limit=5)
 df_lobbying
 
 
-# In[39]:
+# In[42]:
 
 
 fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1, figsize=(11, 5), dpi=150)
@@ -580,7 +622,7 @@ fig.savefig(f, format="svg")
 price_vs_short_interest = f.getvalue().decode("utf-8")
 
 
-# In[40]:
+# In[43]:
 
 
 fig, (candles, volume) = plt.subplots(nrows=2, ncols=1, figsize=(11, 5), dpi=150)
@@ -598,7 +640,7 @@ fig.savefig(f, format="svg")
 price_chart = f.getvalue().decode("utf-8")
 
 
-# In[41]:
+# In[44]:
 
 
 fig, ax = plt.subplots(figsize=(11, 3), dpi=150)
@@ -616,7 +658,7 @@ fig.savefig(f, format="svg")
 price_target_chart = f.getvalue().decode("utf-8")
 
 
-# In[42]:
+# In[45]:
 
 
 df = openbb.stocks.dd.pt(symbol=symbol)
@@ -639,7 +681,7 @@ if not df.empty:
 last_price = round(ticker_data["Close"][-1], 2)
 
 
-# In[43]:
+# In[46]:
 
 
 fig, ax = plt.subplots(figsize=(11, 3), dpi=150)
@@ -656,7 +698,7 @@ fig.savefig(f, format="svg")
 ratings_over_time_chart = f.getvalue().decode("utf-8")
 
 
-# In[44]:
+# In[47]:
 
 
 fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1, figsize=(11, 3), dpi=150)
@@ -667,7 +709,7 @@ fig.savefig(f, format="svg")
 ta_rsi = f.getvalue().decode("utf-8")
 
 
-# In[45]:
+# In[48]:
 
 
 df = openbb.ta.rsi(ticker_data["Close"])
@@ -675,7 +717,7 @@ rsi_value = round(df.values[-1][0], 2)
 rsi_value
 
 
-# In[46]:
+# In[49]:
 
 
 from sklearn.linear_model import LinearRegression
@@ -687,7 +729,7 @@ model = LinearRegression().fit(
 regression_slope = round(model.coef_[0], 2)
 
 
-# In[47]:
+# In[50]:
 
 
 import pandas as pd
@@ -709,7 +751,7 @@ else:
     df_insider
 
 
-# In[48]:
+# In[51]:
 
 
 fig, ax = plt.subplots(figsize=(11, 3), dpi=150)
@@ -720,7 +762,7 @@ fig.savefig(f, format="svg")
 finbrain_sentiment = f.getvalue().decode("utf-8")
 
 
-# In[49]:
+# In[52]:
 
 
 df_sentiment_finbrain = openbb.stocks.ca.sentiment(symbols=[symbol])
@@ -729,7 +771,7 @@ df_sentiment_finbrain = openbb.stocks.ca.sentiment(symbols=[symbol])
 finbrain_sentiment_val = 0
 
 
-# In[50]:
+# In[53]:
 
 
 (
@@ -748,7 +790,7 @@ else:
 stocktwits_sentiment
 
 
-# In[51]:
+# In[54]:
 
 
 fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1, figsize=(11, 5), dpi=150)
@@ -759,7 +801,7 @@ fig.savefig(f, format="svg")
 snews = f.getvalue().decode("utf-8")
 
 
-# In[52]:
+# In[55]:
 
 
 ticker_data_all = openbb.stocks.load(
@@ -769,7 +811,7 @@ ticker_data_all = openbb.stocks.load(
 ticker_data_all["Returns"] = ticker_data_all["Adj Close"].pct_change()
 
 
-# In[53]:
+# In[56]:
 
 
 fig, ax = plt.subplots(figsize=(11, 3), dpi=150)
@@ -786,7 +828,7 @@ fig.savefig(f, format="svg")
 bw_month = f.getvalue().decode("utf-8")
 
 
-# In[54]:
+# In[57]:
 
 
 fig, ax = plt.subplots(figsize=(11, 3), dpi=150)
@@ -803,7 +845,7 @@ fig.savefig(f, format="svg")
 bw_year = f.getvalue().decode("utf-8")
 
 
-# In[55]:
+# In[58]:
 
 
 income_df = openbb.stocks.fa.income(symbol, source="YahooFinance")
@@ -828,14 +870,14 @@ if score:
     score = round(float(score), 2)
 
 
-# In[56]:
+# In[59]:
 
 
 hist_ratios = openbb.stocks.fa.ratios(symbol)
 hist_ratios
 
 
-# In[57]:
+# In[60]:
 
 
 fig, (ax1, ax2, ax3) = plt.subplots(
@@ -850,7 +892,7 @@ fig.savefig(f, format="svg")
 ma_chart = f.getvalue().decode("utf-8")
 
 
-# In[58]:
+# In[61]:
 
 
 fig, (ax, ax1) = plt.subplots(nrows=2, ncols=1, figsize=(11, 5), sharex=True, dpi=150)
@@ -861,7 +903,7 @@ fig.savefig(f, format="svg")
 macd_chart = f.getvalue().decode("utf-8")
 
 
-# In[59]:
+# In[62]:
 
 
 fig, (ax, ax1) = plt.subplots(nrows=2, ncols=1, figsize=(11, 5), sharex=True, dpi=150)
@@ -872,7 +914,7 @@ fig.savefig(f, format="svg")
 cci_chart = f.getvalue().decode("utf-8")
 
 
-# In[60]:
+# In[63]:
 
 
 fig, (ax, ax1) = plt.subplots(nrows=2, ncols=1, figsize=(11, 5), dpi=150)
@@ -884,7 +926,7 @@ fig.savefig(f, format="svg")
 stoch_chart = f.getvalue().decode("utf-8")
 
 
-# In[61]:
+# In[64]:
 
 
 fig, (ax, ax1) = plt.subplots(2, 1, sharex=True, figsize=(11, 5), dpi=150)
@@ -895,7 +937,7 @@ fig.savefig(f, format="svg")
 adx_chart = f.getvalue().decode("utf-8")
 
 
-# In[62]:
+# In[65]:
 
 
 fig, ax = plt.subplots(figsize=(11, 3), dpi=150)
@@ -906,7 +948,7 @@ fig.savefig(f, format="svg")
 bbands_chart = f.getvalue().decode("utf-8")
 
 
-# In[63]:
+# In[66]:
 
 
 fig, (ax, ax1, ax2) = plt.subplots(3, 1, sharex=True, figsize=(11, 8), dpi=150)
@@ -919,7 +961,7 @@ ad_chart = f.getvalue().decode("utf-8")
 
 # ## Render the report template to a file
 
-# In[64]:
+# In[67]:
 
 
 body =""
@@ -1085,8 +1127,6 @@ try:
 except:
     pass
 
-
-
 body += widgets.add_tab("Analyst Opinions", htmlcode, False)
 
 htmlcode = f"""
@@ -1190,26 +1230,26 @@ htmlcode = widgets.row([net_short_position])
 htmlcode += widgets.row([price_vs_short_interest])
 body += widgets.add_tab("Shorts", htmlcode, False)
 
+htmlcode = widgets.row(
+    [
+        widgets.h(3, f"Return on invested capital for companies similar to {symbol}")
+        + roic_chart
+    ]
+)
 
-try:
-    htmlcode += widgets.row([widgets.h(3, "Valuation Comparison") + valuation_comparison.to_html()])
-except:
-    pass
+htmlcode += widgets.row(
+    [
+        widgets.h(3, f"Return on equity for companies similar to {symbol}")
+        + roe_chart
+    ]
+)
 
-try:
-    htmlcode += widgets.row([widgets.h(3, "Financials Comparison") + financial_comparison.to_html()])
-except:
-    pass
-
-try:
-    htmlcode += widgets.row([widgets.h(3, "Ownership Comparison") + ownership_comparison.to_html()])
-except:
-    pass
-
-try:
-    htmlcode += widgets.row([widgets.h(3, "Performance Comparison") + performance_comparison.to_html()])
-except:
-    pass
+htmlcode += widgets.row(
+    [
+        widgets.h(3, f"EBITDA margin for companies similar to {symbol}")
+        + ebitda_margin_chart
+    ]
+)
 
 htmlcode += widgets.row(
     [
@@ -1236,6 +1276,25 @@ htmlcode += widgets.row(
     ]
 )
 
+try:
+    htmlcode += widgets.row([widgets.h(3, "Valuation Comparison") + valuation_comparison.to_html()])
+except:
+    pass
+
+try:
+    htmlcode += widgets.row([widgets.h(3, "Financials Comparison") + financial_comparison.to_html()])
+except:
+    pass
+
+try:
+    htmlcode += widgets.row([widgets.h(3, "Ownership Comparison") + ownership_comparison.to_html()])
+except:
+    pass
+
+try:
+    htmlcode += widgets.row([widgets.h(3, "Performance Comparison") + performance_comparison.to_html()])
+except:
+    pass
 
 htmlcode += widgets.row(
     [

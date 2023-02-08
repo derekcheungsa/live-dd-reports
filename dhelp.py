@@ -28,20 +28,24 @@ metricDict = {  'ROE' : 'return_on_equity',
                 'EV_EBITDA': 'ev_ebitda',
                 'OSS' : 'diluted_weighted_average_shares_outstanding',
                 'ROIC': 'return_on_total_capital',
+                'EV_EBIT' : 'ev_ebit',
+                'PB' : 'pb_ratio',
+                'EBITDA_MARGIN' : 'ebitda_margin',
                 'ROA' : 'return_on_avg_tot_assets'}
 
 # Customize 
 def get_exchange_dict () :
-    return { 'TSLA' : 'NASDAQ',
+    return {      'TSLA' : 'NASDAQ',
                   'GOOG' : 'NASDAQ',
                   'MSFT' : 'NASDAQ',
                   'GLNG' : 'NASDAQ',
+                  'FTCO' : 'OTC',
                   'BBBY' : 'NASDAQ',
                   'TMDX' : 'NASDAQ'
             }
 
 def get_similar_companies_dict():
-    return {'AM' : ['EPD','ET','ENB','PBA','MPLX'],
+    return {'AM' : ['EPD','ET','ENB','PBA','MPLX','AM'],
             'AR': ['RRC', 'EQT','SWN','CNX','CHK'],
             'CMRE': ['DAC','GSL','EGLE'],
             'FLNG' : ['GLNG','SFL'],
@@ -100,9 +104,13 @@ def display_historical_metric(tickerList: str, metricShort:str, external_axes : 
     for col in df.columns:
         if col == 'date':
             continue
+
         if(metricShort == "OSS"):
             ax.plot(df['date'].str[:-3], df[col]/1000000, label=col)
             unit = "[M]"
+        elif (metricShort == "EV_EBIT"):
+            ax.plot(df['date'].str[:-3], df[col], label=col)
+            unit = ""
         else:
             ax.plot(df['date'].str[:-3], df[col], label=col)
             unit = "[%]"
@@ -153,7 +161,12 @@ def get_historical_metric(tickerList: str, metric:str ) -> pd.DataFrame:
             "GET", url, data=payload, headers=headers, params=querystring
         )
 
-        seek_object = response.json()["data"][ticker.lower()][metric]
+        seek_object = response.json()["data"]
+        
+        if ticker.lower() in seek_object:
+            seek_object[ticker.lower()][metric]
+        else:
+            continue
             
         # add the dates and first
         if first_time:
