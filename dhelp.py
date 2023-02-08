@@ -164,7 +164,7 @@ def get_historical_metric(tickerList: str, metric:str ) -> pd.DataFrame:
         seek_object = response.json()["data"]
         
         if ticker.lower() in seek_object:
-            seek_object[ticker.lower()][metric]
+            seek_object=seek_object[ticker.lower()][metric]
         else:
             continue
             
