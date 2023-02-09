@@ -3,7 +3,7 @@
 
 # ## Notebook setup
 
-# In[ ]:
+# In[1]:
 
 
 import os
@@ -57,7 +57,7 @@ warnings.filterwarnings("ignore")
 predictions = False
 
 
-# In[ ]:
+# In[2]:
 
 
 cfg.theme = TerminalStyle("light", "light", "light")
@@ -69,13 +69,13 @@ stylesheet = widgets.html_report_stylesheet()
 
 # 
 
-# In[ ]:
+# In[3]:
 
 
 # Parameters that will be replaced when calling this notebook
 # Do not leave parameters blank as notebook will not run otherwise
 symbol = sys.argv[1]
-#symbol = "GSL"
+#symbol = "CMRE"
 
 investor_report_url_dict= dhelp.get_investor_report_url_dict()
 morningstar_report_url_dict=dhelp.get_morningstar_report_url_dict()
@@ -105,7 +105,7 @@ else:
 report_name = f"{symbol}".upper()
 
 
-# In[ ]:
+# In[4]:
 
 
 if "." in symbol:
@@ -115,7 +115,7 @@ if "." in symbol:
 symbol = symbol.upper()
 
 
-# In[ ]:
+# In[5]:
 
 
 ticker_data = openbb.stocks.load(
@@ -133,7 +133,7 @@ report_title, report_date, report_time, report_timezone
 
 # ## Data
 
-# In[ ]:
+# In[6]:
 
 
 (
@@ -144,7 +144,7 @@ report_title, report_date, report_time, report_timezone
 df_quarter_revenues
 
 
-# In[ ]:
+# In[7]:
 
 
 display_year = sorted(df_year_estimates.columns.tolist())[:3]
@@ -152,7 +152,7 @@ df_year_estimates = df_year_estimates[display_year].head(5)
 df_year_estimates
 
 
-# In[ ]:
+# In[8]:
 
 
 tables = openbb.etf.news(f"{long_name}", 20)
@@ -162,7 +162,7 @@ for table in tables:
     )
 
 
-# In[ ]:
+# In[9]:
 
 
 df_institutional_shareholders = openbb.stocks.fa.shrs(symbol, holder="institutional")
@@ -170,27 +170,27 @@ df_institutional_shareholders.index += 1
 df_institutional_shareholders
 
 
-# In[ ]:
+# In[10]:
 
 
 openbb.stocks.fa.shrs(symbol)
 
 
-# In[ ]:
+# In[11]:
 
 
-fig, ax = plt.subplots(figsize=(11,5), dpi=150)
-dhelp.display_historical_metric([symbol],"OSS", external_axes=[
-        ax,
-    ])
+#fig, ax = plt.subplots(figsize=(11,5), dpi=150)
+#dhelp.display_historical_metric([symbol],"OSS", external_axes=[
+#        ax,
+#    ])
 
-fig.tight_layout()
-f = io.BytesIO()
-fig.savefig(f, format="svg")
-shares_outstanding_chart = f.getvalue().decode("utf-8")
+#fig.tight_layout()
+#f = io.BytesIO()
+#fig.savefig(f, format="svg")
+#shares_outstanding_chart = f.getvalue().decode("utf-8")
 
 
-# In[ ]:
+# In[12]:
 
 
 df_institutional_shareholders = openbb.stocks.fa.shrs(symbol)
@@ -198,7 +198,7 @@ df_institutional_shareholders.index += 1
 df_institutional_shareholders
 
 
-# In[ ]:
+# In[13]:
 
 
 df_sec_filings = openbb.stocks.dd.sec(symbol=symbol)
@@ -212,20 +212,20 @@ if (len(df_sec_filings) > 0):
 df_sec_filings
 
 
-# In[ ]:
+# In[14]:
 
 
 df_analyst = openbb.stocks.dd.analyst(symbol=symbol)
 
 
-# In[ ]:
+# In[15]:
 
 
 df_rating = openbb.stocks.dd.rating(symbol)
 df_rating
 
 
-# In[ ]:
+# In[16]:
 
 
 fig, ax = plt.subplots(figsize=(11, 3), dpi=150)
@@ -242,69 +242,50 @@ fig.savefig(f, format="svg")
 pcr_chart = f.getvalue().decode("utf-8")
 
 
-# In[ ]:
+# In[17]:
 
 
-expiry_dates = openbb.stocks.options.expirations(symbol)
-if (len(expiry_dates) > 0):
-    exp = expiry_dates[0]
-    option_chain = openbb.stocks.options.chains(symbol, expiration=exp)
-else:
-    option_chain = pd.DataFrame()
+#expiry_dates = openbb.stocks.options.expirations(symbol)
+#if (len(expiry_dates) > 0):
+#    exp = expiry_dates[0]
+#    option_chain = openbb.stocks.options.chains(symbol, expiration=exp)
+#else:
+#    option_chain = pd.DataFrame()
 
 
-# In[ ]:
+# In[18]:
 
 
-if not option_chain.empty:
-    fig, ax = plt.subplots(figsize=(11, 3), dpi=150)
-    ax.plot(
-        option_chain["strike"], option_chain["c_Openinterest"], label="Call Open Interest"
-    )
-    ax.plot(
-        option_chain["strike"], option_chain["p_Openinterest"], label="Put Open Interest"
-    )
-    ax.legend()
-    fig.tight_layout()
-    f = io.BytesIO()
-    fig.savefig(f, format="svg")
-    vol_chart = f.getvalue().decode("utf-8")
+#if not option_chain.empty:
+#    fig, ax = plt.subplots(figsize=(11, 3), dpi=150)
+#    ax.plot(
+#        option_chain["strike"], option_chain["c_Openinterest"], label="Call Open Interest"
+#    )
+#    ax.plot(
+#        option_chain["strike"], option_chain["p_Openinterest"], label="Put Open Interest"
+#    )
+#    ax.legend()
+#    fig.tight_layout()
+#    f = io.BytesIO()
+#    fig.savefig(f, format="svg")
+#    vol_chart = f.getvalue().decode("utf-8")
 
 
-# In[ ]:
+# In[19]:
 
 
-if not option_chain.empty:
-    fig, ax = plt.subplots(figsize=(11, 8), dpi=150)
-    ax.plot(option_chain["strike"], option_chain["c_Volume"], label="Call Volume")
-    ax.plot(option_chain["strike"], option_chain["p_Volume"], label="Put Volume")
-    ax.legend()
-    fig.tight_layout()
-    f = io.BytesIO()
-    fig.savefig(f, format="svg")
-    voi_chart = f.getvalue().decode("utf-8")
+#if not option_chain.empty:
+#    fig, ax = plt.subplots(figsize=(11, 8), dpi=150)
+#    ax.plot(option_chain["strike"], option_chain["c_Volume"], label="Call Volume")
+#    ax.plot(option_chain["strike"], option_chain["p_Volume"], label="Put Volume")
+#    ax.legend()
+#    fig.tight_layout()
+#    f = io.BytesIO()
+#    fig.savefig(f, format="svg")
+#    voi_chart = f.getvalue().decode("utf-8")
 
 
-# In[ ]:
-
-
-fig, ax1 = plt.subplots(figsize=(11, 5), dpi=150)
-ax2 = ax1.twinx()
-openbb.stocks.dps.spos_chart(
-    symbol=symbol,
-    limit=84,
-    raw=False,
-    export="",
-    external_axes=[ax1, ax2],
-)
-fig.tight_layout()
-
-f = io.BytesIO()
-fig.savefig(f, format="svg")
-net_short_position = f.getvalue().decode("utf-8")
-
-
-# In[ ]:
+# In[20]:
 
 
 fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1, figsize=(11, 5), dpi=150)
@@ -316,7 +297,7 @@ fig.savefig(f, format="svg")
 dark_pools = f.getvalue().decode("utf-8")
 
 
-# In[ ]:
+# In[21]:
 
 
 fig, ax = plt.subplots(figsize=(11, 3), dpi=150)
@@ -333,7 +314,7 @@ fig.savefig(f, format="svg")
 gtrades_chart = f.getvalue().decode("utf-8")
 
 
-# In[ ]:
+# In[22]:
 
 
 fig, ax = plt.subplots(figsize=(11, 3), dpi=150)
@@ -350,7 +331,7 @@ fig.savefig(f, format="svg")
 gov_contracts_chart = f.getvalue().decode("utf-8")
 
 
-# In[ ]:
+# In[23]:
 
 
 fig, ax = plt.subplots(figsize=(11, 3), dpi=150)
@@ -366,7 +347,7 @@ fig.savefig(f, format="svg")
 google_mentions_chart = f.getvalue().decode("utf-8")
 
 
-# In[ ]:
+# In[24]:
 
 
 fig, ax = plt.subplots(figsize=(11, 3), dpi=150)
@@ -383,7 +364,7 @@ fig.savefig(f, format="svg")
 google_regions_chart = f.getvalue().decode("utf-8")
 
 
-# In[ ]:
+# In[25]:
 
 
 if (symbol in similar_companies_dict):
@@ -406,11 +387,11 @@ fig.savefig(f, format="svg")
 historical_similar = f.getvalue().decode("utf-8")
 
 
-# In[ ]:
+# In[26]:
 
 
 fig, ax = plt.subplots(figsize=(11,5), dpi=150)
-dhelp.display_historical_metric(similar_companies,"ROIC", external_axes=[
+dhelp.display_historical_metric(similar_companies,"Return on capital employed", external_axes=[
         ax,
     ])
 
@@ -420,32 +401,39 @@ fig.savefig(f, format="svg")
 roic_chart = f.getvalue().decode("utf-8")
 
 
-# In[ ]:
+# In[29]:
 
 
 fig, ax = plt.subplots(figsize=(11,5), dpi=150)
-dhelp.display_historical_metric(similar_companies,"ROE", external_axes=[
+dhelp.display_historical_metric(similar_companies,"Operating profit margin", external_axes=[
         ax,
     ])
 
 fig.tight_layout()
 f = io.BytesIO()
 fig.savefig(f, format="svg")
-roe_chart = f.getvalue().decode("utf-8")
+operating_margin_chart = f.getvalue().decode("utf-8")
 
 
 # In[ ]:
 
 
-fig, ax = plt.subplots(figsize=(11,5), dpi=150)
-dhelp.display_historical_metric(similar_companies,"EBITDA_MARGIN", external_axes=[
-        ax,
-    ])
+df_historical_ratios=openbb.stocks.fa.ratios(symbol=symbol,quarterly=True,limit=16)
+df_historical_ratios
 
-fig.tight_layout()
-f = io.BytesIO()
-fig.savefig(f, format="svg")
-ebitda_margin_chart = f.getvalue().decode("utf-8")
+
+# In[ ]:
+
+
+#fig, ax = plt.subplots(figsize=(11,5), dpi=150)
+#dhelp.display_historical_metric(similar_companies,"EBITDA_MARGIN", external_axes=[
+#        ax,
+#    ])
+
+#fig.tight_layout()
+#f = io.BytesIO()
+#fig.savefig(f, format="svg")
+#ebitda_margin_chart = f.getvalue().decode("utf-8")
 
 
 # In[ ]:
@@ -557,8 +545,20 @@ performance_comparison
 # In[ ]:
 
 
-df_historical_metrics = openbb.stocks.fa.metrics(symbol)
-df_historical_metrics
+fig, ax1 = plt.subplots(figsize=(11, 5), dpi=150)
+ax2 = ax1.twinx()
+openbb.stocks.dps.spos_chart(
+    symbol=symbol,
+    limit=84,
+    raw=False,
+    export="",
+    external_axes=[ax1, ax2],
+)
+fig.tight_layout()
+
+f = io.BytesIO()
+fig.savefig(f, format="svg")
+net_short_position = f.getvalue().decode("utf-8")
 
 
 # In[ ]:
@@ -1154,12 +1154,12 @@ htmlcode = f"""
 </div>
 """
 
-try:
-    htmlcode += widgets.row(
-        [widgets.h(3, "Shares outstanding ") + shares_outstanding_chart]
-    )
-except:
-    pass
+#try:
+#    htmlcode += widgets.row(
+#        [widgets.h(3, "Shares outstanding ") + shares_outstanding_chart]
+#    )
+#except:
+#    pass
 
 try:
     htmlcode += widgets.row(
@@ -1208,27 +1208,29 @@ except:
 
 htmlcode += widgets.row([widgets.h(3, "Ratios") + hist_ratios.to_html(escape=False)])
 
-htmlcode += widgets.row([widgets.h(3, "Metrics") + df_historical_metrics.to_html(escape=False)])
-
 body += widgets.add_tab("Fundamental Analysis", htmlcode, False)
 
 htmlcode = widgets.row([widgets.h(3, "Put to call ratio") + pcr_chart])
-if not option_chain.empty:
-    htmlcode += widgets.row(
-        [widgets.h(3, "Option Volume for closest expiry date") + vol_chart]
-    )
-    htmlcode += widgets.row(
-        [widgets.h(3, "Volume and Open Interest for closest expiry date") + voi_chart]
-    )
-try:
-    htmlcode += widgets.row([widgets.h(3, "Option Chains") + options_df.to_html()])
-except:
-    pass
+#if not option_chain.empty:
+#    htmlcode += widgets.row(
+#        [widgets.h(3, "Option Volume for closest expiry date") + vol_chart]
+#    )
+#    htmlcode += widgets.row(
+#        [widgets.h(3, "Volume and Open Interest for closest expiry date") + voi_chart]
+#    )
+#try:
+#    htmlcode += widgets.row([widgets.h(3, "Option Chains") + options_df.to_html()])
+#except:
+#    pass
 body += widgets.add_tab("Options", htmlcode, False)
 
 htmlcode = widgets.row([net_short_position])
 htmlcode += widgets.row([price_vs_short_interest])
 body += widgets.add_tab("Shorts", htmlcode, False)
+
+htmlcode += widgets.row(
+    [widgets.h(3, "Strong ROIC and Operating Margins are signal of presence of moat")]
+)
 
 htmlcode = widgets.row(
     [
@@ -1239,17 +1241,17 @@ htmlcode = widgets.row(
 
 htmlcode += widgets.row(
     [
-        widgets.h(3, f"Return on equity for companies similar to {symbol}")
-        + roe_chart
+        widgets.h(3, f"Operating margin for companies similar to {symbol}")
+        + operating_margin_chart
     ]
 )
 
-htmlcode += widgets.row(
-    [
-        widgets.h(3, f"EBITDA margin for companies similar to {symbol}")
-        + ebitda_margin_chart
-    ]
-)
+#htmlcode += widgets.row(
+#    [
+#        widgets.h(3, f"EBITDA margin for companies similar to {symbol}")
+#        + ebitda_margin_chart
+#    ]
+#)
 
 htmlcode += widgets.row(
     [

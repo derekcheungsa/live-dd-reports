@@ -9,7 +9,7 @@ import numpy as np
 import json
 from typing import List, Optional
 
-from openbb_terminal.helper_funcs import get_user_agent
+from openbb_terminal.sdk import openbb
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import lambda_long_number_format
 from openbb_terminal.config_plot import PLOT_DPI
@@ -29,26 +29,23 @@ metricDict = {  'ROE' : 'return_on_equity',
                 'EV_EBITDA': 'ev_ebitda',
                 'OSS' : 'diluted_weighted_average_shares_outstanding',
                 'ROIC': 'return_on_total_capital',
-                'EV_EBIT' : 'ev_ebit',
-                'PB' : 'pb_ratio',
-                'EBITDA_MARGIN' : 'ebitda_margin',
                 'ROA' : 'return_on_avg_tot_assets'}
 
 # Customize 
 def get_exchange_dict () :
-    return {      'TSLA' : 'NASDAQ',
+    return { 'TSLA' : 'NASDAQ',
                   'GOOG' : 'NASDAQ',
                   'MSFT' : 'NASDAQ',
                   'GLNG' : 'NASDAQ',
-                  'FTCO' : 'OTC',
                   'BBBY' : 'NASDAQ',
                   'TMDX' : 'NASDAQ'
             }
 
 def get_similar_companies_dict():
-    return {'AM' : ['EPD','ET','ENB','PBA','MPLX','AM'],
-            'AR': ['RRC', 'EQT','SWN','CNX','CHK'],
+    return {'AM' : ['EPD','ET','ENB','PBA','MPLX'],
+            'AR': ['RRC', 'EQT','SWN','CNX'],
             'CMRE': ['DAC','GSL','EGLE'],
+            'ET'  : ['AM','EPD','MPLX','PBA'],
             'FLNG' : ['GLNG','SFL'],
             'FTCO': ['GOLD','KGC','AU','AEM','NEM'],
             'GSL' : ['DAC','CMRE','SFL'],
@@ -90,13 +87,9 @@ def get_morningstar_report_url_dict():
             }
 
 
-def display_historical_metric(tickerList: str, metricShort:str, external_axes : Optional[List[plt.Axes]]):
-    metric=metricDict[metricShort]
-    
+def display_historical_metric(tickerList: str, metric:str, external_axes : Optional[List[plt.Axes]]):
+        
     df=get_historical_metric(tickerList, metric)
-    if df.empty:
-        return
-
     unit = ""
 
     if not external_axes:
@@ -108,25 +101,16 @@ def display_historical_metric(tickerList: str, metricShort:str, external_axes : 
     for col in df.columns:
         if col == 'date':
             continue
-
-        if(metricShort == "OSS"):
-            ax.plot(df['date'].str[:-3], df[col]/1000000, label=col)
-            unit = "[M]"
-        elif (metricShort == "EV_EBIT"):
-            ax.plot(df['date'].str[:-3], df[col], label=col)
-            unit = ""
-        else:
-            ax.plot(df['date'].str[:-3], df[col], label=col)
-            unit = "[%]"
-
-    ax.set_title("Historical " + metricShort)
-    ax.set_ylabel(metricShort + " " + unit)
-    ax.tick_params(axis='x', labelsize=9)
-    ax.tick_params(axis='y', labelsize=9)
+        ax.plot(df['date'], df[col], label=col)
+      
+    ax.set_title("Historical " + metric)
+    ax.set_ylabel(metric + " " + unit)
     # ensures that the historical data starts from same datapoint
     ax.set_xlim([df.index[0], df.index[-1]])
 
     ax.legend()
+    ax.tick_params(axis='x', labelsize=9)
+    ax.tick_params(axis='y', labelsize=9)
     theme.style_primary_axis(ax)
 
     if not external_axes:
@@ -135,66 +119,34 @@ def display_historical_metric(tickerList: str, metricShort:str, external_axes : 
 
 def get_historical_metric(tickerList: str, metric:str ) -> pd.DataFrame:
     
-    url = "https://seekingalpha.com/api/v3/symbol_data/charting"
-
-    df = pd.DataFrame()
+    df_return = pd.DataFrame()
     first_time = True
     date_length = 0    
 
     for ticker in tickerList:
-        querystring = {
-        "end": datetime.now().strftime("%Y-%m-%d"),
-        "metrics": metric,
-        "slugs[]" : ticker,
-        "start":   "2018-01-30",
-        }
-
-        payload = ""
-        headers = {
-            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:106.0) Gecko/20100101 Firefox/106.0",
-            "Accept": "*/*",
-            "Accept-Language": "de,en-US;q=0.7,en;q=0.3",
-            "Accept-Encoding": "gzip, deflate, br",
-            "Sec-Fetch-Dest": "empty",
-            "Sec-Fetch-Mode": "cors",
-            "Sec-Fetch-Site": "same-origin",
-            "Connection": "keep-alive",
-        }
-
-        response = requests.request(
-            "GET", url, data=payload, headers=headers, params=querystring
-        )
-
-        seek_object = response.json()
-        if "data" in seek_object:
-           seek_object=seek_object["data"]
-           if ticker.lower() in seek_object:
-               seek_object=seek_object[ticker.lower()][metric]
-           else:
-               continue
-        else:
-            continue
-            
+        df = openbb.stocks.fa.ratios(symbol=ticker,quarterly=True,limit=10)
+        df = df.reindex(columns=df.columns[::-1])
+       
         # add the dates and first
         if first_time:
             date_array  = [] 
         
         metric_array= []
-        for key, value in seek_object.items():
-            date_array.append(key)
-            metric_array.append(value)
+        for column in df.columns:
+            date_array.append(column)
+            metric_array.append(float(df.loc[metric,column]))
         
         if first_time:
-            df["date"]  = date_array
+            df_return["date"]  = date_array
             date_length = len(date_array)
         
         metric_array_len = len(metric_array)
         if (date_length == metric_array_len):
-            df[ticker] = metric_array   
+            df_return[ticker] = metric_array   
             
         first_time = False         
 
-    return df    
+    return df_return        
     
    
 @log_start_end(log=logger)
@@ -241,7 +193,7 @@ def get_estimates_eps(ticker: str) -> pd.DataFrame:
     }
 
     # semi random user agent -- disabled and static user agent because it might be the reason for 403
-    headers["User-Agent"] = get_user_agent()
+    # headers["User-Agent"] = get_user_agent()
 
     response = requests.request(
         "GET", url, data=payload, headers=headers, params=querystring
