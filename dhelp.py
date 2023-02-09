@@ -101,7 +101,7 @@ def display_historical_metric(tickerList: str, metric:str, external_axes : Optio
     for col in df.columns:
         if col == 'date':
             continue
-        ax.plot(df['date'], df[col], label=col)
+        ax.plot(df['date'], df[col], label=col,linewidth=2)
       
     ax.set_title("Historical " + metric)
     ax.set_ylabel(metric + " " + unit)
