@@ -24,20 +24,22 @@ from openbb_terminal.config_terminal import theme
 
 logger = logging.getLogger(__name__)
 
-metricDict = {  'ROE' : 'return_on_equity',
-                'PE'  : 'pe_ratio',
-                'EV_EBITDA': 'ev_ebitda',
-                'OSS' : 'diluted_weighted_average_shares_outstanding',
-                'ROIC': 'return_on_total_capital',
-                'ROA' : 'return_on_avg_tot_assets'}
+def is_number(string):
+    try:
+        float(string)
+        return True
+    except ValueError:
+        return False
 
 # Customize 
 def get_exchange_dict () :
     return { 'TSLA' : 'NASDAQ',
                   'GOOG' : 'NASDAQ',
                   'MSFT' : 'NASDAQ',
+                  'ASRT' : 'NASDAQ',
                   'GLNG' : 'NASDAQ',
                   'BBBY' : 'NASDAQ',
+                   'VIR' : 'NASDAQ',
                   'TMDX' : 'NASDAQ'
             }
 
@@ -53,6 +55,7 @@ def get_similar_companies_dict():
             'INSW' : ['FRO','TRMD','EURN'],
             'IBM' : ['MSFT','GOOGL','INTC','HPQ','AAPL'],
             'MPLX' : ['AM','EPD','ENB','PBA','ET'],
+            'MSFT' : ['IBM','GOOGL','INTC','HPQ','AAPL'],
             'TRTN' : ['TGH','AER','GATX'],
             'KNTK' : ['AM','EPD','ENB','PBA','ET','MPLX'],
             'V' : ['MA','PYPL','SQ','EBAY','FIS'],
@@ -61,9 +64,11 @@ def get_similar_companies_dict():
 
 def get_investor_report_url_dict():
     return {'TRTN': 'https://www.tritoninternational.com/sites/triton-corp/files/investor-presentation-nov-2022.pdf',
+            'ASRT': 'https://s28.q4cdn.com/742207512/files/doc_financials/2022/q3/Assertio-Holdings-Earnings-Q3-2022[75]-Read-Only.pdf',
             'AM'  : 'https://d1io3yog0oux5.cloudfront.net/_374edef9c4170f864475079b2fb421fd/anteromidstream/db/711/6478/pdf/AM+Website+Presentation+December+2022_vF2_11.30.22.pdf',
             'GSL': 'https://drive.google.com/file/d/1ZJAgOEVbZKH96mahev-FGMRpUui0Lym8/preview', 
             'NS' : 'https://investor.nustarenergy.com/static-files/67e67e05-d236-4ccf-8ee3-78a2d93e57a4',
+            'VIR': 'https://investors.vir.bio/static-files/818547ca-65aa-4fa5-a7d0-0a20b3105971',
             'GLNG': 'https://www.golarlng.com/~/media/Files/G/Golar-Lng/documents/presentation/golar-lng-limited-2022-q3-results-presentation.pdf',
             'MP' : 'https://s25.q4cdn.com/570172628/files/doc_presentations/2022/11/MP-3Q22-Earnings-Deck-FINAL.pdf',
             'TMDX': 'https://investors.transmedics.com/static-files/c4f69c45-77b0-4981-a5a7-b404ab4aae95',
@@ -117,14 +122,18 @@ def display_historical_metric(tickerList: str, metric:str, external_axes : Optio
         theme.visualize_output()
 
 
-def get_historical_metric(tickerList: str, metric:str ) -> pd.DataFrame:
+def get_historical_metric(tickerList: str, metric:str) -> pd.DataFrame:
     
     df_return = pd.DataFrame()
     first_time = True
     date_length = 0    
 
     for ticker in tickerList:
+        
         df = openbb.stocks.fa.ratios(symbol=ticker,quarterly=True,limit=10)
+        if (metric not in df.index):
+            df = openbb.stocks.fa.metrics(symbol=ticker,quarterly=True,limit=10)
+      
         df = df.reindex(columns=df.columns[::-1])
        
         # add the dates and first
@@ -134,7 +143,11 @@ def get_historical_metric(tickerList: str, metric:str ) -> pd.DataFrame:
         metric_array= []
         for column in df.columns:
             date_array.append(column)
-            metric_array.append(float(df.loc[metric,column]))
+            if (is_number(df.loc[metric,column])):
+                metric_array.append(float(df.loc[metric,column]))
+            else:
+                df.loc[metric,column]=float(df.loc[metric,column].replace("k", "").replace("K", ""))*1000
+                metric_array.append(df.loc[metric,column])
         
         if first_time:
             df_return["date"]  = date_array
