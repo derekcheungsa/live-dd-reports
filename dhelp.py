@@ -48,6 +48,7 @@ def get_similar_companies_dict():
             'AR': ['RRC', 'EQT','SWN','CNX'],
             'CMRE': ['DAC','GSL','EGLE'],
             'ET'  : ['AM','EPD','MPLX','PBA'],
+            'ENB'  : ['AM','EPD','MPLX','PBA'],
             'FLNG' : ['GLNG','SFL'],
             'FTCO': ['GOLD','KGC','AU','AEM','NEM'],
             'GSL' : ['DAC','CMRE','SFL'],

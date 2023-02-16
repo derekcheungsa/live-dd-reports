@@ -1,5 +1,6 @@
 #!/bin/bash
 pip install --upgrade pip
+pip install openbb
 pip install pandas
 pip install pandas-ta
 pip install tweepy
