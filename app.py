@@ -12,6 +12,7 @@ from fastapi.responses import FileResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
+from openbb_terminal.sdk import openbb
 
 #Use this dict to add term to the query, you can use OR in the string for more than one term
 #
