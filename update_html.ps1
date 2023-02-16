@@ -1,6 +1,6 @@
 # List of parameters
 #$param_list = "AM AR AROC CMRE EGY EPR EPD ET FLNG FTCO HDSN GSL GLNG GOOG JXN KNTK IBM INSW MP MPW MSFT MPLX TSLA TRTN OXY V VET ZIM"
-$param_list = "VIR"
+$param_list = "MPW"
 
 
 # Splitting the string
