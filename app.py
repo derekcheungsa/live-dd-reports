@@ -36,7 +36,7 @@ templates = Jinja2Templates(directory="public/templates")
 @app.get("/get_ratios_quarterly/{symbol_name}", response_class=HTMLResponse)
 async def get_ratios_quarterly(symbol_name: str, request: Request):
     period="quarter"
-    url = "https://financialmodelingprep.com/api/v3/ratios/" + symbol_name +"?period=quarter&limit=16&apikey=" + fmp_key
+    url = "https://financialmodelingprep.com/api/v3/ratios/" + symbol_name.upper() +"?period=quarter&limit=16&apikey=" + fmp_key
     response = urlopen(url, cafile=certifi.where())
     data = json.loads(response.read().decode("utf-8"))
     data_formatted = {}
@@ -49,9 +49,10 @@ async def get_ratios_quarterly(symbol_name: str, request: Request):
         del value['symbol']
 
         data_formatted[date] = value
+
     df=pd.DataFrame(data_formatted)
-    
-    return {df.to_json(date_unit="s", date_format="iso")}
+   
+    return df.to_json(date_unit="s", date_format="iso")
 
 # Main code needed to render the get the tweets and render in HTML
 @app.get("/tweet/{symbol_name}", response_class=HTMLResponse)
