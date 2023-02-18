@@ -28,8 +28,11 @@ consumer_key = os.environ['TWITTER_KEY']
 consumer_secret = os.environ['TWITTER_SECRET']
 access_token  = os.environ['TWITTER_ACCESS_TOKEN'] 
 access_token_secret  = os.environ['TWITTER_ACCESS_SECRET'] 
+fmp_key = os.environ['FMP_KEY']
 
 templates = Jinja2Templates(directory="public/templates")
+
+
 
 # Main code needed to render the get the tweets and render in HTML
 @app.get("/tweet/{symbol_name}", response_class=HTMLResponse)
@@ -203,13 +206,13 @@ async def get_pcr_scalar(symbol_name: str):
 
 @app.get("/get_ratios_ttm/{symbol_name}")
 async def get_ratios_ttm(symbol_name: str):
-    response = urlopen("https://financialmodelingprep.com/api/v3/ratios-ttm/"+symbol_name+"?apikey=9f03152100c273fca5d80d8aacdfda8a")
+    response = urlopen("https://financialmodelingprep.com/api/v3/ratios-ttm/"+symbol_name+"?apikey="+fmp_key)
     data = json.loads(response.read().decode("utf-8"))
     return data
 
 @app.get("/get_key_metrics_ttm/{symbol_name}")
 async def get_key_metrics_ttm(symbol_name: str):
-    response = urlopen("https://financialmodelingprep.com/api/v3/key-metrics-ttm/"+symbol_name+"?apikey=9f03152100c273fca5d80d8aacdfda8a")
+    response = urlopen("https://financialmodelingprep.com/api/v3/key-metrics-ttm/"+symbol_name+"?apikey"+fmp_key)
     data = json.loads(response.read().decode("utf-8"))
     return data
 

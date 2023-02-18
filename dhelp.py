@@ -53,6 +53,7 @@ def get_similar_companies_dict():
             'FTCO': ['GOLD','KGC','AU','AEM','NEM'],
             'GSL' : ['DAC','CMRE','SFL'],
             'MP' : ['SGML','LAC','MTRN'],
+            'MPW' : ['CTRE','PEAK','OHI','VTR','CHCT','WELL'],
             'INSW' : ['FRO','TRMD','EURN'],
             'IBM' : ['MSFT','GOOGL','INTC','HPQ','AAPL'],
             'MPLX' : ['AM','EPD','ENB','PBA','ET'],
@@ -83,7 +84,7 @@ def get_investor_report_url_dict():
             'AROC': 'https://s26.q4cdn.com/362558937/files/doc_presentations/2022/11/AROC-Investor-Presentation_RBCWidescreen-vFinal.pdf',
             'V'   : 'https://s29.q4cdn.com/385744025/files/doc_downloads/2022/Visa-Inc-Fiscal-2022-Annual-Report.pdf',
             'TSLA': 'https://tesla-cdn.thron.com/static/SVCPTV_2022_Q4_Quarterly_Update_JZPPNX.pdf?xseo=&response-content-disposition=inline%3Bfilename%3D%22TSLA-Q4-2022-Update.pdf%22',
-            'AR' : 'https://d1io3yog0oux5.cloudfront.net/_6cc4d707f40f7cc56aebe36b019cb270/anteroresources/db/641/5970/pdf/AR+Investor+Presentation_Dec_12.01.2022_vF3.pdf'
+            'AR' : 'https://d1io3yog0oux5.cloudfront.net/_786164d62386d24d4fce39b5d57905e8/anteroresources/db/732/7255/pdf/4Q2022_Earnings+Call_Presentation_02.16.2023+vF1_Website.pdf'
             }
 
 def get_morningstar_report_url_dict():
