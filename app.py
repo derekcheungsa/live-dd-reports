@@ -208,14 +208,14 @@ async def get_pcr_scalar(symbol_name: str):
 async def get_ratios_ttm(symbol_name: str):
     response = urlopen("https://financialmodelingprep.com/api/v3/ratios-ttm/"+symbol_name+"?apikey="+fmp_key)
     data = json.loads(response.read().decode("utf-8"))
-    return data
+    return data   
 
 @app.get("/get_key_metrics_ttm/{symbol_name}")
 async def get_key_metrics_ttm(symbol_name: str):
     response = urlopen("https://financialmodelingprep.com/api/v3/key-metrics-ttm/"+symbol_name+"?apikey"+fmp_key)
     data = json.loads(response.read().decode("utf-8"))
     return data
-
+ 
 @app.get("/get_call_option_chain/{symbol_name}")
 async def get_option_chain(symbol_name: str):
     options_data = get_full_option_chain(symbol_name)
