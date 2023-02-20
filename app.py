@@ -39,21 +39,14 @@ async def get_ratios_quarterly(symbol_name: str, request: Request):
     url = "https://financialmodelingprep.com/api/v3/ratios/" + symbol_name.upper() +"?period=quarter&limit=16&apikey=" + fmp_key
     response = urlopen(url)
     return response.read().decode("utf-8")
-    #return json.loads(response.read().decode("utf-8"))
-    #data_formatted = {}
-    #for value in data:
-    #    if period == "quarter":
-    #        date = value['date'][:7]
-    #    else:
-    #        date = value['date'][:4]
-    #    del value['date']
-    #    del value['symbol']
-
-    #    data_formatted[date] = value
-
-    #df=pd.DataFrame(data_formatted)
+    
+@app.get("/get_key_metrics_quarterly/{symbol_name}", response_class=HTMLResponse)
+async def get_key_metrics_quarterly(symbol_name: str, request: Request):
    
-    #return df.to_json(date_unit="s", date_format="iso")
+    url = "https://financialmodelingprep.com/api/v3/key-metrics/" + symbol_name.upper() +"?period=quarter&limit=16&apikey=" + fmp_key
+    response = urlopen(url)
+    return response.read().decode("utf-8")
+    
 
 # Main code needed to render the get the tweets and render in HTML
 @app.get("/tweet/{symbol_name}", response_class=HTMLResponse)
