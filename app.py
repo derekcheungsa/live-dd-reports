@@ -39,6 +39,12 @@ async def get_ratios_quarterly(symbol_name: str, request: Request):
     url = "https://financialmodelingprep.com/api/v3/ratios/" + symbol_name.upper() +"?period=quarter&limit=16&apikey=" + fmp_key
     response = urlopen(url)
     return response.read().decode("utf-8")
+
+@app.get("/get_enterprise_value_quarterly/{symbol_name}", response_class=HTMLResponse)
+async def get_enterprise_value_quarterly(symbol_name: str, request: Request):
+    url = "https://financialmodelingprep.com/api/v3/enterprise-values/" + symbol_name.upper() +"?period=quarter&limit=16&apikey=" + fmp_key
+    response = urlopen(url)
+    return response.read().decode("utf-8")
     
 @app.get("/get_key_metrics_quarterly/{symbol_name}", response_class=HTMLResponse)
 async def get_key_metrics_quarterly(symbol_name: str, request: Request):

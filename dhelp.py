@@ -6,6 +6,7 @@ import logging
 import requests
 import pandas as pd
 import numpy as np
+import re
 import json
 from typing import List, Optional
 
@@ -94,6 +95,52 @@ def get_morningstar_report_url_dict():
             'MSFT': 'https://drive.google.com/file/d/13Ay0BFGV-3RuES6Q1Ak92kKoLgHbAO3k/preview'
             }
 
+def color_negative_red(valin):
+    try:
+        val = float(valin.replace(",", ""))
+        if val > 0:
+            color = 'lightgreen'
+        elif val < 0:
+            color = 'red'
+        else:
+            color = 'yellow'
+    except:
+        try:
+            val = float(valin.split(" ")[0].replace(",", ""))
+            if val > 0:
+                color = 'lightgreen'
+            elif val < 0:
+                color = 'red'
+            else:
+                color = 'yellow'
+        except:
+            color = 'magenta'
+
+    return 'color: %s' % color
+
+def color_dataframe(df: pd.DataFrame):
+    """Color the dataframe based on the values of the columns and rows
+
+    Returns
+    -------
+    df: pd.DataFrame
+        colored dataframe
+    """
+    '''
+    for col in df.columns:
+        # checks whether column exists
+        if col in df.columns:
+            df[col] = df[col].apply(lambda x: return_colored_value(str(x)))
+   
+    for row in df.rows:
+        # checks whether row exists
+        if row in df.index:
+            df.loc[row] = df.loc[row].apply(
+                lambda x: return_colored_value(str(x))
+            )
+    '''
+    df.index = [' '.join(re.split('(?<=.)(?=[A-Z])', val)).capitalize() for val in df.index]
+    return df.style.format(precision=0).applymap(color_negative_red)
 
 def display_historical_metric(tickerList: str, metric:str, external_axes : Optional[List[plt.Axes]]):
         
