@@ -3,7 +3,7 @@
 
 # ## Notebook setup
 
-# In[1]:
+# In[ ]:
 
 
 import os
@@ -17,7 +17,6 @@ import dotenv
 
 import matplotlib.pyplot as plt
 import matplotlib_inline.backend_inline
-import dhelp
 
 # Get the current InteractiveShell instance
 #ipython = get_ipython()
@@ -37,7 +36,7 @@ from openbb_terminal.helper_classes import TerminalStyle
 from openbb_terminal.core.config.paths import USER_ENV_FILE, REPOSITORY_DIRECTORY
 import yfinance as yf
 import pandas as pd
-import dhelp 
+from dhelp import color_dataframe, get_investor_report_url_dict,get_morningstar_report_url_dict, get_exchange_dict,get_similar_companies_dict, display_historical_metric
 from jinja2 import Template
 
 #get_ipython().run_line_magic('matplotlib', 'inline')
@@ -57,7 +56,7 @@ warnings.filterwarnings("ignore")
 predictions = False
 
 
-# In[2]:
+# In[ ]:
 
 
 cfg.theme = TerminalStyle("light", "light", "light")
@@ -69,18 +68,18 @@ stylesheet = widgets.html_report_stylesheet()
 
 # 
 
-# In[3]:
+# In[ ]:
 
 
 # Parameters that will be replaced when calling this notebook
 # Do not leave parameters blank as notebook will not run otherwise
 symbol = sys.argv[1]
-#symbol = "CMRE"
+#symbol = "MPW"
 
-investor_report_url_dict= dhelp.get_investor_report_url_dict()
-morningstar_report_url_dict=dhelp.get_morningstar_report_url_dict()
-exchange_dict=dhelp.get_exchange_dict()
-similar_companies_dict=dhelp.get_similar_companies_dict()
+investor_report_url_dict= get_investor_report_url_dict()
+morningstar_report_url_dict=get_morningstar_report_url_dict()
+exchange_dict=get_exchange_dict()
+similar_companies_dict=get_similar_companies_dict()
 
 if (symbol in investor_report_url_dict):
     investor_report_url = investor_report_url_dict[symbol]
@@ -105,7 +104,7 @@ else:
 report_name = f"{symbol}".upper()
 
 
-# In[4]:
+# In[ ]:
 
 
 if "." in symbol:
@@ -115,7 +114,7 @@ if "." in symbol:
 symbol = symbol.upper()
 
 
-# In[5]:
+# In[ ]:
 
 
 ticker_data = openbb.stocks.load(
@@ -133,7 +132,7 @@ report_title, report_date, report_time, report_timezone
 
 # ## Data
 
-# In[6]:
+# In[ ]:
 
 
 (
@@ -142,9 +141,10 @@ report_title, report_date, report_time, report_timezone
     df_quarter_revenues,
 ) = openbb.stocks.dd.est(symbol=symbol)
 df_quarter_revenues
+color_dataframe(df_quarter_revenues)
 
 
-# In[7]:
+# In[ ]:
 
 
 display_year = sorted(df_year_estimates.columns.tolist())[:3]
@@ -152,7 +152,7 @@ df_year_estimates = df_year_estimates[display_year].head(5)
 df_year_estimates
 
 
-# In[8]:
+# In[ ]:
 
 
 tables = openbb.etf.news(f"{long_name}", 20)
@@ -162,7 +162,7 @@ for table in tables:
     )
 
 
-# In[9]:
+# In[ ]:
 
 
 df_institutional_shareholders = openbb.stocks.fa.shrs(symbol, holder="institutional")
@@ -170,13 +170,13 @@ df_institutional_shareholders.index += 1
 df_institutional_shareholders
 
 
-# In[10]:
+# In[ ]:
 
 
 openbb.stocks.fa.shrs(symbol)
 
 
-# In[11]:
+# In[ ]:
 
 
 #fig, ax = plt.subplots(figsize=(11,5), dpi=150)
@@ -190,7 +190,7 @@ openbb.stocks.fa.shrs(symbol)
 #shares_outstanding_chart = f.getvalue().decode("utf-8")
 
 
-# In[12]:
+# In[ ]:
 
 
 df_institutional_shareholders = openbb.stocks.fa.shrs(symbol)
@@ -198,7 +198,7 @@ df_institutional_shareholders.index += 1
 df_institutional_shareholders
 
 
-# In[13]:
+# In[ ]:
 
 
 df_sec_filings = openbb.stocks.dd.sec(symbol=symbol)
@@ -212,20 +212,20 @@ if (len(df_sec_filings) > 0):
 df_sec_filings
 
 
-# In[14]:
+# In[ ]:
 
 
 df_analyst = openbb.stocks.dd.analyst(symbol=symbol)
 
 
-# In[15]:
+# In[ ]:
 
 
 df_rating = openbb.stocks.dd.rating(symbol)
 df_rating
 
 
-# In[16]:
+# In[ ]:
 
 
 fig, ax = plt.subplots(figsize=(11, 3), dpi=150)
@@ -242,7 +242,7 @@ fig.savefig(f, format="svg")
 pcr_chart = f.getvalue().decode("utf-8")
 
 
-# In[17]:
+# In[ ]:
 
 
 #expiry_dates = openbb.stocks.options.expirations(symbol)
@@ -253,7 +253,7 @@ pcr_chart = f.getvalue().decode("utf-8")
 #    option_chain = pd.DataFrame()
 
 
-# In[18]:
+# In[ ]:
 
 
 #if not option_chain.empty:
@@ -271,7 +271,7 @@ pcr_chart = f.getvalue().decode("utf-8")
 #    vol_chart = f.getvalue().decode("utf-8")
 
 
-# In[19]:
+# In[ ]:
 
 
 #if not option_chain.empty:
@@ -285,7 +285,7 @@ pcr_chart = f.getvalue().decode("utf-8")
 #    voi_chart = f.getvalue().decode("utf-8")
 
 
-# In[20]:
+# In[ ]:
 
 
 fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1, figsize=(11, 5), dpi=150)
@@ -297,7 +297,7 @@ fig.savefig(f, format="svg")
 dark_pools = f.getvalue().decode("utf-8")
 
 
-# In[21]:
+# In[ ]:
 
 
 fig, ax = plt.subplots(figsize=(11, 3), dpi=150)
@@ -314,7 +314,7 @@ fig.savefig(f, format="svg")
 gtrades_chart = f.getvalue().decode("utf-8")
 
 
-# In[22]:
+# In[ ]:
 
 
 fig, ax = plt.subplots(figsize=(11, 3), dpi=150)
@@ -331,7 +331,7 @@ fig.savefig(f, format="svg")
 gov_contracts_chart = f.getvalue().decode("utf-8")
 
 
-# In[23]:
+# In[ ]:
 
 
 fig, ax = plt.subplots(figsize=(11, 3), dpi=150)
@@ -347,7 +347,7 @@ fig.savefig(f, format="svg")
 google_mentions_chart = f.getvalue().decode("utf-8")
 
 
-# In[24]:
+# In[ ]:
 
 
 fig, ax = plt.subplots(figsize=(11, 3), dpi=150)
@@ -364,7 +364,7 @@ fig.savefig(f, format="svg")
 google_regions_chart = f.getvalue().decode("utf-8")
 
 
-# In[25]:
+# In[ ]:
 
 
 if (symbol in similar_companies_dict):
@@ -387,32 +387,32 @@ fig.savefig(f, format="svg")
 historical_similar = f.getvalue().decode("utf-8")
 
 
-# In[26]:
+# In[ ]:
 
 
 fig, ax = plt.subplots(figsize=(11,5), dpi=150)
-dhelp.display_historical_metric(similar_companies,"Return on capital employed", external_axes=[
+display_historical_metric(similar_companies,"Free cash flow yield", external_axes=[
         ax,
     ])
 
 fig.tight_layout()
 f = io.BytesIO()
 fig.savefig(f, format="svg")
-roic_chart = f.getvalue().decode("utf-8")
+fcf_yield_chart = f.getvalue().decode("utf-8")
 
 
-# In[29]:
+# In[ ]:
 
 
 fig, ax = plt.subplots(figsize=(11,5), dpi=150)
-dhelp.display_historical_metric(similar_companies,"Operating profit margin", external_axes=[
+display_historical_metric(similar_companies,"Payout ratio", external_axes=[
         ax,
     ])
 
 fig.tight_layout()
 f = io.BytesIO()
 fig.savefig(f, format="svg")
-operating_margin_chart = f.getvalue().decode("utf-8")
+payout_ratio_chart = f.getvalue().decode("utf-8")
 
 
 # In[ ]:
@@ -420,6 +420,13 @@ operating_margin_chart = f.getvalue().decode("utf-8")
 
 df_historical_ratios=openbb.stocks.fa.ratios(symbol=symbol,quarterly=True,limit=16)
 df_historical_ratios
+
+
+# In[ ]:
+
+
+df_historical_metrics=openbb.stocks.fa.metrics(symbol=symbol,quarterly=True,limit=16)
+df_historical_metrics
 
 
 # In[ ]:
@@ -1228,7 +1235,7 @@ htmlcode = widgets.row([net_short_position])
 htmlcode += widgets.row([price_vs_short_interest])
 body += widgets.add_tab("Shorts", htmlcode, False)
 
-htmlcode += widgets.row(
+htmlcode = widgets.row(
     [widgets.h(3, "Strong ROIC and Operating Margins are signal of presence of moat")]
 )
 
@@ -1241,17 +1248,17 @@ htmlcode = widgets.row(
 
 htmlcode += widgets.row(
     [
-        widgets.h(3, f"Operating margin for companies similar to {symbol}")
-        + operating_margin_chart
+        widgets.h(3, f"Free Cash Flow Yield of companies similar to {symbol}")
+        + fcf_yield_chart
     ]
 )
 
-#htmlcode += widgets.row(
-#    [
-#        widgets.h(3, f"EBITDA margin for companies similar to {symbol}")
-#        + ebitda_margin_chart
-#    ]
-#)
+htmlcode += widgets.row(
+        [
+        widgets.h(3, f"Payout ratio for companies similar to {symbol}")
+        + payout_ratio_chart
+    ]
+)
 
 htmlcode += widgets.row(
     [
