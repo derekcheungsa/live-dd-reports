@@ -69,7 +69,7 @@ def get_investor_report_url_dict():
     return {'TRTN': 'https://www.tritoninternational.com/sites/triton-corp/files/investor-presentation-nov-2022.pdf',
             'ASRT': 'https://s28.q4cdn.com/742207512/files/doc_financials/2022/q3/Assertio-Holdings-Earnings-Q3-2022[75]-Read-Only.pdf',
             'AM'  : 'https://d1io3yog0oux5.cloudfront.net/_374edef9c4170f864475079b2fb421fd/anteromidstream/db/711/6478/pdf/AM+Website+Presentation+December+2022_vF2_11.30.22.pdf',
-            'GSL': 'https://drive.google.com/file/d/1ZJAgOEVbZKH96mahev-FGMRpUui0Lym8/preview', 
+            'GSL': 'https://static.seekingalpha.com/uploads/sa_presentations/659/91659/original.pdf', 
             'NS' : 'https://investor.nustarenergy.com/static-files/67e67e05-d236-4ccf-8ee3-78a2d93e57a4',
             'VIR': 'https://investors.vir.bio/static-files/818547ca-65aa-4fa5-a7d0-0a20b3105971',
             'GLNG': 'https://www.golarlng.com/~/media/Files/G/Golar-Lng/documents/presentation/golar-lng-limited-2022-q3-results-presentation.pdf',
