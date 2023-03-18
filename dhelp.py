@@ -80,6 +80,7 @@ def get_investor_report_url_dict():
             'CMRE': 'https://drive.google.com/file/d/1Hz4B8nDCK_oJoiEEdPy2q_aqXPxZOwx_/preview',                
             'EGY' : 'https://d1io3yog0oux5.cloudfront.net/_202883002163863943d602098d2b6e88/vaalco/db/776/7755/pdf/November+IR+Deck+Final+v1.pdf',
             'EPR' : 'https://investors.eprkc.com/investor-presentation/default.aspx',
+            'BBW' : 'https://ir.buildabear.com/static-files/857a3d2a-9432-49c5-9729-acb5d5711a57',
             'MPW' : 'https://medicalpropertiestrust.gcs-web.com/static-files/bc900aaa-9eac-413f-9625-bbe025c03f44',
             'MSFT': 'https://view.officeapps.live.com/op/view.aspx?src=https://c.s-microsoft.com/en-us/CMSFiles/SlidesFY22Q2.pptx?version=4a9117e1-04ff-5143-12a0-1ecfc041aa59',
             'AROC': 'https://s26.q4cdn.com/362558937/files/doc_presentations/2022/11/AROC-Investor-Presentation_RBCWidescreen-vFinal.pdf',
