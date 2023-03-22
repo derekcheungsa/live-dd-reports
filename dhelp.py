@@ -70,6 +70,7 @@ def get_investor_report_url_dict():
             'ASRT': 'https://s28.q4cdn.com/742207512/files/doc_financials/2022/q3/Assertio-Holdings-Earnings-Q3-2022[75]-Read-Only.pdf',
             'AM'  : 'https://d1io3yog0oux5.cloudfront.net/_374edef9c4170f864475079b2fb421fd/anteromidstream/db/711/6478/pdf/AM+Website+Presentation+December+2022_vF2_11.30.22.pdf',
             'GSL': 'https://static.seekingalpha.com/uploads/sa_presentations/659/91659/original.pdf', 
+            'CLCO':  'https://www.coolcoltd.com/sites/coolcoltd/files/2023-02/4q22-investor-presentation-final.pdf',
             'NS' : 'https://investor.nustarenergy.com/static-files/67e67e05-d236-4ccf-8ee3-78a2d93e57a4',
             'VIR': 'https://investors.vir.bio/static-files/818547ca-65aa-4fa5-a7d0-0a20b3105971',
             'GLNG': 'https://www.golarlng.com/~/media/Files/G/Golar-Lng/documents/presentation/golar-lng-limited-2022-q3-results-presentation.pdf',
