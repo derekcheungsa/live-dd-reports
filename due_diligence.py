@@ -92,9 +92,12 @@ else:
     morningstar_report_url= ""
 
 df_data = openbb.stocks.fa.data(symbol)
-long_name = df_data.at["Company","Values"]
-sector =  df_data.at["Sector","Values"]
-industry = df_data.at["Industry","Values"]
+if (symbol == "CLCO"):
+    long_name="Coolco"
+else:
+    long_name = df_data.at["Company","Values"]
+#sector =  df_data.at["Sector","Values"]
+#industry = df_data.at["Industry","Values"]
 
 if (symbol in exchange_dict):
     exchange=exchange_dict[symbol]
