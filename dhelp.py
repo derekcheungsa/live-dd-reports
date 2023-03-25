@@ -83,7 +83,7 @@ def get_investor_report_url_dict():
             'EPR' : 'https://investors.eprkc.com/investor-presentation/default.aspx',
             'BBW' : 'https://ir.buildabear.com/static-files/857a3d2a-9432-49c5-9729-acb5d5711a57',
             'MPW' : 'https://medicalpropertiestrust.gcs-web.com/static-files/bc900aaa-9eac-413f-9625-bbe025c03f44',
-            'MSFT': 'https://view.officeapps.live.com/op/view.aspx?src=https://c.s-microsoft.com/en-us/CMSFiles/SlidesFY22Q2.pptx?version=4a9117e1-04ff-5143-12a0-1ecfc041aa59',
+            'MSFT': 'https://view.officeapps.live.com/op/view.aspx?src=https://c.s-microsoft.com/en-us/CMSFiles/SlidesFY23Q2.pptx?version=45e56bf4-c9a8-c02c-8926-bda5bef92f5e',
             'AROC': 'https://s26.q4cdn.com/362558937/files/doc_presentations/2022/11/AROC-Investor-Presentation_RBCWidescreen-vFinal.pdf',
             'V'   : 'https://s29.q4cdn.com/385744025/files/doc_downloads/2022/Visa-Inc-Fiscal-2022-Annual-Report.pdf',
             'TSLA': 'https://tesla-cdn.thron.com/static/SVCPTV_2022_Q4_Quarterly_Update_JZPPNX.pdf?xseo=&response-content-disposition=inline%3Bfilename%3D%22TSLA-Q4-2022-Update.pdf%22',
