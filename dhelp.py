@@ -76,7 +76,7 @@ def get_investor_report_url_dict():
             'GLNG': 'https://www.golarlng.com/~/media/Files/G/Golar-Lng/documents/presentation/golar-lng-limited-2022-q3-results-presentation.pdf',
             'MP' : 'https://s25.q4cdn.com/570172628/files/doc_presentations/2022/11/MP-3Q22-Earnings-Deck-FINAL.pdf',
             'TMDX': 'https://investors.transmedics.com/static-files/c4f69c45-77b0-4981-a5a7-b404ab4aae95',
-            'FLNG': 'https://ml-eu.globenewswire.com/Resource/Download/362a3031-2be8-4698-93d0-8066618b20b6',
+            'FLNG': 'https://ml-eu.globenewswire.com/Resource/Download/08fc9131-aae7-42a1-b4f6-3a49f4f4b447',
             'JXN': 'https://s28.q4cdn.com/568090435/files/doc_presentation/Analyst-Day-Presentation.pdf',         
             'CMRE': 'https://drive.google.com/file/d/1Hz4B8nDCK_oJoiEEdPy2q_aqXPxZOwx_/preview',                
             'EGY' : 'https://d1io3yog0oux5.cloudfront.net/_202883002163863943d602098d2b6e88/vaalco/db/776/7755/pdf/November+IR+Deck+Final+v1.pdf',
