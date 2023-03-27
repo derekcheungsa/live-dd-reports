@@ -66,7 +66,7 @@ def get_similar_companies_dict():
             }
 
 def get_investor_report_url_dict():
-    return {'TRTN': 'https://www.tritoninternational.com/sites/triton-corp/files/investor-presentation-nov-2022.pdf',
+    return {'TRTN': 'https://www.tritoninternational.com/sites/triton-corp/files/investor-presentation-feb-2023.pdf',
             'ASRT': 'https://s28.q4cdn.com/742207512/files/doc_financials/2022/q3/Assertio-Holdings-Earnings-Q3-2022[75]-Read-Only.pdf',
             'AM'  : 'https://d1io3yog0oux5.cloudfront.net/_374edef9c4170f864475079b2fb421fd/anteromidstream/db/711/6478/pdf/AM+Website+Presentation+December+2022_vF2_11.30.22.pdf',
             'GSL': 'https://static.seekingalpha.com/uploads/sa_presentations/659/91659/original.pdf', 
